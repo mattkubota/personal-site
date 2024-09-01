@@ -109,6 +109,7 @@ section {
   transform: rotate(16deg);
   transition-duration: 0.2s;
   filter: drop-shadow(0px 0px 0px rgba(0, 8, 30, 0.3));
+  cursor: pointer;
 }
 
 #sticker {
@@ -130,6 +131,9 @@ section {
 #sticker img {
   width: 100%;
   position: absolute;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 
 #shine {
@@ -178,13 +182,17 @@ section {
   border-bottom: 4px solid rgb(255, 221, 70);
 }
 
-#contact a {
+#contact a, #email {
   border-bottom: 2px solid rgb(255, 221, 70);
 }
 
-#box-2 a:hover {
+#box-2 a:hover, #box-2 #email:hover {
   background-color: rgb(255, 221, 70);
   color: #157d4e;
+}
+
+#email:hover {
+  cursor: pointer;
 }
 
 #img-container {

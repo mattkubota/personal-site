@@ -40,6 +40,38 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;700&display=swap" rel="stylesheet">
+    <style>
+      .snackbar {
+        visibility: hidden;
+        min-width: 250px;
+        margin-left: -125px;
+        background-color: #333;
+        color: #fff;
+        text-align: center;
+        border-radius: 2px;
+        padding: 16px;
+        position: fixed;
+        z-index: 1;
+        left: 50%;
+        bottom: 30px;
+        font-size: 14px;
+      }
+
+      .snackbar.show {
+        visibility: visible;
+        animation: fadein 0.5s, fadeout 0.5s 2.5s;
+      }
+
+      @keyframes fadein {
+        from {bottom: 0; opacity: 0;}
+        to {bottom: 30px; opacity: 1;}
+      }
+
+      @keyframes fadeout {
+        from {bottom: 30px; opacity: 1;}
+        to {bottom: 0; opacity: 0;}
+      }
+    </style>
   </head>
   <body>
     <main>
@@ -51,7 +83,7 @@
         <div id="hero-container">
           <img id="hero" src="assets/images/matt-kubota.webp" width="950" height="633" alt="Matt Kubota speaking at a conference">
           <div id="sticker-container">
-            <a id="sticker" href="mailto:matthewkubota@gmail.com">
+            <a id="sticker" onclick="copyEmail(event)">
               <img src="assets/images/sticker.svg" alt="Let's talk!">
               <div id="shine"></div>
             </a>
@@ -60,7 +92,7 @@
       </section>
       <section id="box-2">
         <p id="bio">I've been a designer for a while now, solving tough problems through a combination of deep user understanding and a healthy penchant for tinkering. Currently, I'm revamping the roadside assistance experience at <a href="https://www.curbsidesos.com/">Curbside SOS</a>, making stressful situations easier for drivers. I'm also the founder of <a href="https://www.vocable.app/">Vocable AAC</a>, an app that enables people with limited speech to communicate using <a href="https://twitter.com/mattkubota/status/1240012092595412992">head movements</a>. Previously, I connected hungry diners with local restaurants at <a href="https://www.grubhub.com/">Grubhub</a> and cut my teeth crafting digital products at <a href="https://www.willowtreeapps.com/">WillowTree</a>.</p>
-        <p id="contact">I'd love to connect and chat about design. Email me any time at <a href="mailto:matthewkubota@gmail.com">matthewkubota@gmail.com</a>. Otherwise, find me on Twitter <a href="https://twitter.com/mattkubota">@mattkubota</a> or <a href="https://www.linkedin.com/in/mattkubota/">LinkedIn</a>. Here’s my <a href="assets/files/matt-kubota_resume.pdf" aria-label="PDF Resume">resume</a> if you want that too.</p>
+        <p id="contact">I'd love to connect and chat about design. Email me any time at <span id="email" onclick="copyEmail(event)">matthewkubota(at)gmail(dot)com</span>. Otherwise, find me on Twitter <a href="https://twitter.com/mattkubota">@mattkubota</a> or <a href="https://www.linkedin.com/in/mattkubota/">LinkedIn</a>. Here’s my <a href="assets/files/matt-kubota_resume.pdf" aria-label="PDF Resume">resume</a> if you want that too.</p>
       </section>
       <section class="project" id="box-3--vocable">
         <div>
@@ -99,6 +131,33 @@
         <a href="https://www.notion.so/mattkubota/National-Geographic-9876b6b0abce4806b0584fafaabd3566" class="btn" aria-label="View project">View project →</a>
       </section>
     </main>
+    <script>
+      function copyEmail(event) {
+        const email = "matthewkubota@gmail.com";
+        navigator.clipboard.writeText(email).then(() => {
+          showSnackbar("Email copied!");
+        }).catch(err => {
+          console.error('Failed to copy: ', err);
+          showSnackbar("Failed to copy email");
+        });
+      }
+
+      function showSnackbar(message) {
+        const snackbar = document.getElementById("snackbar");
+        if (!snackbar) {
+          const newSnackbar = document.createElement('div');
+          newSnackbar.id = 'snackbar';
+          newSnackbar.className = 'snackbar';
+          document.body.appendChild(newSnackbar);
+        }
+        const snackbarElement = document.getElementById("snackbar");
+        snackbarElement.textContent = message;
+        snackbarElement.className = "snackbar show";
+        setTimeout(() => {
+          snackbarElement.className = snackbarElement.className.replace("show", "");
+        }, 3000);
+      }
+    </script>
     <!-- Cloudflare Web Analytics --><script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "c3ddab52a6d74937a399f174e32a1201"}'></script><!-- End Cloudflare Web Analytics -->
   </body>
 </html>
