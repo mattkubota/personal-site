@@ -20,7 +20,6 @@ html {
 
 body {
   line-height: inherit;
-  -webkit-font-smoothing: antialiased;
 }
 
 /* ==========================================================================
@@ -62,8 +61,9 @@ body {
   /* Colors */
   --color-text: #1a1a1a;
   --color-text-muted: #666666;
-  --color-bg: #ffffff;
-  --color-link: #0066cc;
+  --color-bg: #fefefe;
+  --color-accent: #0066cc;
+  --color-accent-orange: #ff6b35;
   --color-link-hover-bg: #e6f3ff;
   --color-border: #e5e5e5;
 
@@ -82,7 +82,6 @@ body {
   line-height: var(--line-height-normal);
   color: var(--color-text);
   background-color: var(--color-bg);
-  margin: 0 auto;
   padding: var(--content-padding);
 }
 
@@ -91,23 +90,25 @@ h1,
 h2,
 h3,
 h4 {
-  font-weight: 600;
+  font-size: var(--font-size-base);
   line-height: var(--line-height-tight);
   margin-bottom: var(--space-lg);
 }
 
 h1 {
-  font-size: var(--font-size-4xl);
-  font-weight: 500;
+  font-weight: 600;
+  color: var(--color-text);
 }
 
 h2 {
-  font-size: var(--font-size-2xl);
+  font-weight: 600;
+  color: var(--color-text-muted);
   margin-top: var(--space-4xl);
 }
 
 h3 {
-  font-size: var(--font-size-xl);
+  font-weight: 600;
+  color: var(--color-text-muted);
 }
 
 p {
@@ -117,7 +118,7 @@ p {
 
 /* Links */
 a {
-  color: var(--color-link);
+  color: var(--color-accent);
   text-decoration: underline;
   text-underline-offset: 0.2em;
   text-decoration-thickness: 1px;
@@ -125,11 +126,15 @@ a {
   transition: background-color 0.2s ease, text-decoration-thickness 0.2s ease;
 }
 
-a:hover,
-a:focus {
+a:hover {
   background-color: var(--color-link-hover-bg);
   text-decoration-thickness: 2px;
-  outline: 2px solid var(--color-link);
+}
+
+a:focus-visible {
+  background-color: var(--color-link-hover-bg);
+  text-decoration-thickness: 2px;
+  outline: 2px solid var(--color-accent);
   outline-offset: 2px;
 }
 
@@ -156,23 +161,68 @@ a[target="_blank"]::after {
    LAYOUT COMPONENTS
    ========================================================================== */
 
+/* Shared container styles */
+header,
+main,
+.back-nav {
+  max-width: var(--content-max-width);
+  margin: 0 auto;
+}
+
 .header {
   margin-bottom: var(--space-4xl);
-  text-align: center;
+}
+
+/* Homepage specific spacing */
+body:has(.bio) .header {
+  margin-top: calc(var(--space-4xl) * 2);
 }
 
 .chip {
   display: inline-block;
-  background-color: var(--color-border);
-  color: var(--color-text);
+  background-color: var(--color-accent);
+  color: white;
   padding: var(--space-xs) var(--space-md);
   border-radius: 999px;
   font-size: var(--font-size-sm);
-  font-weight: 500;
+  font-weight: 700;
   margin-bottom: var(--space-lg);
+  position: relative;
   /* Non-interactive element - not in tab order */
   -webkit-user-select: none;
   user-select: none;
+}
+
+.chip::before {
+  content: '';
+  position: absolute;
+  top: -4px;
+  left: -4px;
+  right: -4px;
+  bottom: -4px;
+  background-color: var(--color-accent);
+  border-radius: 999px;
+  z-index: -1;
+  filter: blur(8px);
+  animation: glow 4s ease-in-out infinite;
+  opacity: 0;
+}
+
+@keyframes glow {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.4);
+    opacity: 0.3;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .chip::before {
+    animation: none;
+  }
 }
 
 .name {
@@ -184,9 +234,6 @@ a[target="_blank"]::after {
   color: var(--color-text-muted);
 }
 
-.main {
-  max-width: var(--content-max-width);
-}
 
 .bio {
   margin-bottom: var(--space-4xl);
@@ -202,8 +249,174 @@ section {
 }
 
 .project-list {
-  /* Placeholder for project list styles */
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
 }
+
+.project-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: var(--font-size-base);
+  line-height: var(--line-height-relaxed);
+  /* Ensure adequate hit targets */
+  min-height: 44px;
+  padding: var(--space-lg) 0;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.project-row:last-child {
+  border-bottom: none;
+}
+
+.project-row:first-child {
+  padding-top: 0;
+}
+
+.project-year {
+  color: var(--color-text-muted);
+  font-weight: 400;
+  min-width: 4ch;
+  text-align: right;
+  flex-shrink: 0;
+}
+
+
+.project-name {
+  font-weight: 600;
+  color: var(--color-accent);
+  /* Enhance clickable area for better accessibility */
+  padding: var(--space-xs) 0;
+  margin: calc(-1 * var(--space-xs)) 0;
+  flex-grow: 1;
+  text-align: left;
+}
+
+/* ==========================================================================
+   PROJECT DETAIL PAGES
+   ========================================================================== */
+
+.back-nav {
+  padding-left: 0;
+  padding-right: 0;
+  padding-top: var(--content-padding);
+  padding-bottom: var(--space-xl);
+}
+
+.back-link {
+  font-size: var(--font-size-base);
+  color: var(--color-text-muted);
+  text-decoration: none;
+  border-radius: 4px;
+  padding: var(--space-xs) 0;
+  transition: color 0.2s ease, background-color 0.2s ease;
+}
+
+.back-link:hover,
+.back-link:focus-visible {
+  color: var(--color-accent);
+  background-color: var(--color-link-hover-bg);
+  text-decoration: none;
+}
+
+.project {
+  margin-bottom: var(--space-4xl);
+}
+
+.project-header {
+  margin-bottom: var(--space-4xl);
+}
+
+.project-title {
+  font-size: var(--font-size-base);
+  font-weight: 600;
+  color: var(--color-text);
+  line-height: var(--line-height-tight);
+  margin-bottom: var(--space-lg);
+}
+
+.project-meta {
+  display: flex;
+  gap: var(--space-lg);
+  margin-bottom: var(--space-2xl);
+  font-size: var(--font-size-base);
+}
+
+.project-year,
+.project-role {
+  color: var(--color-text-muted);
+}
+
+
+.project-summary {
+  font-size: var(--font-size-lg);
+  line-height: var(--line-height-relaxed);
+  color: var(--color-text);
+}
+
+.project-summary p {
+  font-weight: 500;
+  max-width: 60ch;
+}
+
+.project-content {
+  display: grid;
+  gap: var(--space-4xl);
+}
+
+.project-text h2 {
+  font-size: var(--font-size-base);
+  font-weight: 600;
+  color: var(--color-text-muted);
+  margin-top: var(--space-3xl);
+  margin-bottom: var(--space-lg);
+}
+
+.project-text h2:first-child {
+  margin-top: 0;
+}
+
+.project-text ul {
+  margin: var(--space-lg) 0;
+  padding-left: var(--space-xl);
+}
+
+.project-text li {
+  margin-bottom: var(--space-sm);
+}
+
+.project-media {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2xl);
+}
+
+.media-slot {
+  width: 100%;
+}
+
+.placeholder-image {
+  background-color: var(--color-border);
+  border: 2px dashed var(--color-text-muted);
+  border-radius: 8px;
+  padding: var(--space-4xl);
+  text-align: center;
+  color: var(--color-text-muted);
+  font-size: var(--font-size-sm);
+  aspect-ratio: 16 / 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Media best practices for real images:
+   - Include width and height attributes to prevent CLS
+   - Use WebP format for better compression
+   - Right-size images for different breakpoints
+   - Example: <img src="image.webp" width="800" height="500" alt="..." />
+   - Consider lazy loading for images below the fold
+*/
 
 /* ==========================================================================
    RESPONSIVE DESIGN
@@ -212,15 +425,6 @@ section {
 @media (max-width: 768px) {
   :root {
     --content-padding: var(--space-lg);
-  }
-
-  h1 {
-    font-size: var(--font-size-3xl);
-  }
-
-  h2 {
-    font-size: var(--font-size-xl);
-    margin-top: var(--space-3xl);
   }
 }
 
@@ -233,6 +437,28 @@ section {
 /* ==========================================================================
    UTILITY CLASSES
    ========================================================================== */
+
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: 6px;
+  z-index: 1000;
+  padding: var(--space-sm) var(--space-lg);
+  background-color: var(--color-accent);
+  color: white;
+  text-decoration: none;
+  border-radius: 4px;
+  font-size: var(--font-size-base);
+  font-weight: 600;
+  transition: top 0.2s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.skip-link:focus {
+  top: 6px;
+  outline: 3px solid var(--color-text);
+  outline-offset: 2px;
+}
 
 .visually-hidden {
   position: absolute !important;
