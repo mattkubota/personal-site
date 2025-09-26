@@ -58,7 +58,7 @@ body {
   --color-text: #1a1a1a;
   --color-text-muted: #666666;
   --color-bg: #fefefe;
-  --color-accent: #f1600c;
+  --color-accent: #fc5200;
   --color-success: #1dab62;
   --color-border: #e5e5e5;
 
@@ -82,26 +82,11 @@ body {
 
 /* Typography */
 h1,
-h2,
-h3,
-h4 {
+h2 {
   font-size: var(--font-size-base);
+  font-weight: var(--font-weight-bold);
   line-height: var(--line-height-tight);
   margin-bottom: var(--space-lg);
-}
-
-h1 {
-  font-weight: var(--font-weight-bold);
-}
-
-h2 {
-  font-weight: var(--font-weight-bold);
-  color: var(--color-text-muted);
-}
-
-h3 {
-  font-weight: var(--font-weight-bold);
-  color: var(--color-text-muted);
 }
 
 p {
@@ -149,6 +134,7 @@ a:focus-visible {
 /* Shared container styles */
 header,
 main,
+footer,
 .back-nav {
   max-width: var(--content-max-width);
   margin: 0 auto;
@@ -168,7 +154,7 @@ body:has(.bio) .header {
   align-items: center;
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-normal);
-  margin-bottom: var(--space-xl);
+  margin-top: var(--space-md);
   color: var(--color-text-muted);
   /* Non-interactive element - not in tab order */
   -webkit-user-select: none;
@@ -208,7 +194,13 @@ body:has(.bio) .header {
 }
 
 .name {
-  margin-bottom: var(--space-sm);
+  margin-bottom: 0;
+}
+
+.footer {
+  margin-top: var(--space-4xl);
+  padding-top: var(--space-2xl);
+  border-top: 1px solid var(--color-border);
 }
 
 .last-updated {
