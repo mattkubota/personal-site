@@ -97,7 +97,6 @@ h1 {
 h2 {
   font-weight: var(--font-weight-bold);
   color: var(--color-text-muted);
-  margin-top: var(--space-4xl);
 }
 
 h3 {
@@ -156,7 +155,7 @@ main,
 }
 
 .header {
-  margin-bottom: var(--space-4xl);
+  margin-bottom: var(--space-3xl);
 }
 
 /* Homepage specific spacing */
@@ -217,16 +216,12 @@ body:has(.bio) .header {
   color: var(--color-text-muted);
 }
 
-.bio {
-  margin-bottom: var(--space-4xl);
-}
-
 .bio p {
   line-height: var(--line-height-relaxed);
 }
 
 section {
-  margin-bottom: var(--space-4xl);
+  margin-bottom: var(--space-3xl);
 }
 
 .project-list {
