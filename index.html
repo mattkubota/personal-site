@@ -155,14 +155,14 @@
     <footer class="footer">
       <div class="footer-content">
         <div class="last-updated">Updated September 25, 2025</div>
-        <div class="weather" id="weather-widget">
+        <div class="widgets" id="widgets">
           <span class="weather-icon" id="weather-icon">🌤️</span>
           <span class="local-time" id="local-time">12:00 PM</span>
         </div>
       </div>
     </footer>
 
-    <!-- Weather widget -->
+    <!-- Widgets -->
     <script>
       document.addEventListener('DOMContentLoaded', function() {
         // Weather widget
@@ -172,15 +172,25 @@
             if (response.ok) {
               const weather = await response.json();
               const weatherIcon = document.getElementById('weather-icon');
+              const weatherWidget = document.getElementById('weather-widget');
 
               if (weatherIcon && weather.icon) {
                 weatherIcon.textContent = weather.icon;
                 weatherIcon.title = `${weather.description} in ${weather.city}`;
               }
+
+              // Show the weather icon with fade-in
+              if (weatherIcon) {
+                weatherIcon.classList.add('loaded');
+              }
             }
           } catch (error) {
             console.log('Weather data unavailable');
-            // Silently fail - keep default icon
+            // Show icon anyway with default icon
+            const weatherIcon = document.getElementById('weather-icon');
+            if (weatherIcon) {
+              weatherIcon.classList.add('loaded');
+            }
           }
         }
 

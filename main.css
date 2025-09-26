@@ -161,10 +161,10 @@ body:has(.bio) .header {
   user-select: none;
 }
 
-.weather {
+.widgets {
   display: flex;
   align-items: center;
-  gap: var(--space-xs);
+  gap: var(--space-sm);
   font-size: var(--font-size-sm);
   color: var(--color-text-muted);
   /* Non-interactive element - not in tab order */
@@ -175,6 +175,12 @@ body:has(.bio) .header {
 .weather-icon {
   font-size: 1.5rem;
   line-height: 1;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.weather-icon.loaded {
+  opacity: 1;
 }
 
 .local-time {
