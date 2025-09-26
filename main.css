@@ -58,7 +58,7 @@ body {
   --color-text: #1a1a1a;
   --color-text-muted: #666666;
   --color-bg: #fefefe;
-  --color-accent: rgb(241, 96, 12);
+  --color-accent: #f1600c;
   --color-success: #1dab62;
   --color-border: #e5e5e5;
 
@@ -136,7 +136,6 @@ a:focus-visible {
   width: 0.75em;
   height: 0.75em;
   margin-left: 0.25em;
-  vertical-align: middle;
   fill: none;
   stroke: var(--color-text-muted);
   stroke-width: 2;
