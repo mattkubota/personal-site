@@ -57,6 +57,7 @@ body {
   /* Colors */
   --color-text: #1a1a1a;
   --color-text-muted: #666666;
+  --color-text-footer: #999999;
   --color-bg: #fefefe;
   --color-accent: #fc5200;
   --color-success: #1dab62;
@@ -144,6 +145,24 @@ footer,
   margin-bottom: var(--space-3xl);
 }
 
+.header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.header-widgets {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-sm);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-footer);
+}
+
+.header-widgets .local-time {
+  color: var(--color-text-muted);
+}
+
 /* Homepage specific spacing */
 body:has(.bio) .header {
   margin-top: var(--space-4xl);
@@ -177,6 +196,8 @@ body:has(.bio) .header {
   line-height: 1;
   opacity: 0;
   transition: opacity 0.3s ease;
+  position: relative;
+  top: 2px;
 }
 
 .weather-icon.loaded {
@@ -188,17 +209,21 @@ body:has(.bio) .header {
 }
 
 .spotify-widget {
-  margin-top: var(--space-lg);
   font-size: var(--font-size-sm);
-  color: #999999;
-  text-align: right;
+  color: var(--color-text-footer);
   display: flex;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: flex-start;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.spotify-widget.loaded {
+  opacity: 1;
 }
 
 .spotify-link {
-  color: #999999;
+  color: var(--color-text-footer);
   text-decoration: none;
   margin-right: var(--space-sm);
 }
@@ -216,7 +241,7 @@ body:has(.bio) .header {
 .spotify-icon {
   width: 14px;
   height: 14px;
-  fill: #999999;
+  fill: var(--color-text-footer);
   position: relative;
   top: 2px;
 }
@@ -232,6 +257,37 @@ body:has(.bio) .header {
   text-overflow: ellipsis;
   white-space: nowrap;
   max-width: 200px;
+}
+
+.spotify-track.currently-playing::after {
+  content: "...";
+  animation: ellipsis 1.5s infinite;
+  position: absolute;
+}
+
+@keyframes ellipsis {
+  0% {
+    content: "";
+  }
+  25% {
+    content: ".";
+  }
+  50% {
+    content: "..";
+  }
+  75% {
+    content: "...";
+  }
+  100% {
+    content: "...";
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .spotify-track.currently-playing::after {
+    animation: none;
+    content: "";
+  }
 }
 
 .status::before {
@@ -284,7 +340,7 @@ body:has(.bio) .header {
 
 .last-updated {
   font-size: var(--font-size-sm);
-  color: #999999;
+  color: var(--color-text-footer);
 }
 
 .bio p {
@@ -352,15 +408,16 @@ section {
 }
 
 .project-header {
-  margin-bottom: var(--space-4xl);
+  margin-bottom: var(--space-3xl);
 }
 
 .project-title {
   font-weight: var(--font-weight-bold);
-  margin-bottom: var(--space-lg);
+  margin-bottom: var(--space-sm);
 }
 
 .project-meta {
+  font-size: var(--font-size-sm);
   display: flex;
   margin-bottom: var(--space-2xl);
 }
@@ -376,17 +433,12 @@ section {
   margin: 0 0.5em;
 }
 
-.project-summary p {
-  font-weight: var(--font-weight-normal);
-}
-
 .project-content {
   display: grid;
   gap: var(--space-4xl);
 }
 
 .project-text h2 {
-  color: var(--color-text-muted);
   margin-top: var(--space-3xl);
   margin-bottom: var(--space-lg);
 }
@@ -401,6 +453,7 @@ section {
 }
 
 .project-text li {
+  color: var(--color-text-muted);
   margin-bottom: var(--space-sm);
 }
 
@@ -439,6 +492,20 @@ section {
   :root {
     --content-padding: var(--space-lg);
   }
+
+  .footer-content {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-sm);
+  }
+
+  .spotify-widget {
+    order: 1;
+  }
+
+  .last-updated {
+    order: 2;
+  }
 }
 
 @media (max-width: 320px) {
@@ -471,7 +538,7 @@ section {
   opacity: 0;
   filter: blur(8px);
   transform: translateY(20px);
-  transition: opacity 0.5s ease, filter 0.5s ease, transform 0.5s ease;
+  transition: opacity 0.75s ease, filter 0.75s ease, transform 0.75s ease;
 }
 
 .section-enter.animate {
