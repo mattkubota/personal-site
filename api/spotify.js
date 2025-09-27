@@ -39,7 +39,30 @@ export default async function handler(req, res) {
     const tokenData = await tokenResponse.json();
     const accessToken = tokenData.access_token;
 
-    // Get recently played tracks
+    // First try to get currently playing track
+    const currentlyPlayingResponse = await fetch(
+      "https://api.spotify.com/v1/me/player/currently-playing",
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }
+    );
+
+    // If currently playing and music is active
+    if (currentlyPlayingResponse.ok && currentlyPlayingResponse.status !== 204) {
+      const currentlyPlayingData = await currentlyPlayingResponse.json();
+
+      if (currentlyPlayingData && currentlyPlayingData.item && currentlyPlayingData.is_playing) {
+        return res.status(200).json({
+          track: currentlyPlayingData.item.name,
+          artist: currentlyPlayingData.item.artists.map(artist => artist.name).join(", "),
+          isCurrentlyPlaying: true,
+        });
+      }
+    }
+
+    // Fall back to recently played tracks
     const recentlyPlayedResponse = await fetch(
       "https://api.spotify.com/v1/me/player/recently-played?limit=1",
       {
@@ -70,6 +93,7 @@ export default async function handler(req, res) {
       track: lastTrack.name,
       artist: lastTrack.artists.map(artist => artist.name).join(", "),
       playedAt: recentlyPlayedData.items[0].played_at,
+      isCurrentlyPlaying: false,
     });
   } catch (error) {
     console.error("Spotify API error:", error);

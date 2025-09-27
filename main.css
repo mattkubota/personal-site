@@ -166,7 +166,7 @@ body:has(.bio) .header {
   align-items: center;
   gap: var(--space-sm);
   font-size: var(--font-size-sm);
-  color: var(--color-text-muted);
+  color: #999999;
   /* Non-interactive element - not in tab order */
   -webkit-user-select: none;
   user-select: none;
@@ -187,12 +187,51 @@ body:has(.bio) .header {
   font-weight: var(--font-weight-normal);
 }
 
+.spotify-widget {
+  margin-top: var(--space-lg);
+  font-size: var(--font-size-sm);
+  color: #999999;
+  text-align: right;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.spotify-link {
+  color: #999999;
+  text-decoration: none;
+  margin-right: var(--space-sm);
+}
+
+.spotify-link:hover .spotify-icon,
+.spotify-link:focus-visible .spotify-icon {
+  fill: #1db954;
+}
+
+.spotify-link:hover,
+.spotify-link:focus-visible {
+  background-color: transparent;
+}
+
+.spotify-icon {
+  width: 14px;
+  height: 14px;
+  fill: #999999;
+  position: relative;
+  top: 2px;
+}
+
+.spotify-text {
+  font-weight: var(--font-weight-normal);
+  margin-right: var(--space-xs);
+}
+
 .spotify-track {
   font-weight: var(--font-weight-normal);
-  max-width: 200px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  max-width: 200px;
 }
 
 .status::before {
@@ -245,7 +284,7 @@ body:has(.bio) .header {
 
 .last-updated {
   font-size: var(--font-size-sm);
-  color: var(--color-text-muted);
+  color: #999999;
 }
 
 .bio p {
