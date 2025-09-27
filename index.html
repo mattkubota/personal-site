@@ -237,12 +237,12 @@
           if (combinedWidget) {
             if (spotifyData && spotifyData.artist) {
               if (spotifyData.isCurrentlyPlaying) {
-                const listeningLink = `<a href="https://open.spotify.com/user/mattkubota" target="_blank" rel="noopener noreferrer">listening to</a>`;
-                combinedWidget.innerHTML = time + " and " + listeningLink + " " + spotifyData.artist;
+                const fullLink = `<a href="https://open.spotify.com/user/mattkubota" target="_blank" rel="noopener noreferrer">listening to ${spotifyData.artist}</a>`;
+                combinedWidget.innerHTML = time + " and " + fullLink;
                 combinedWidget.classList.add("currently-playing");
               } else {
-                const lastHeardLink = `<a href="https://open.spotify.com/user/mattkubota" target="_blank" rel="noopener noreferrer">last heard</a>`;
-                combinedWidget.innerHTML = time + " and " + lastHeardLink + " " + spotifyData.artist;
+                const fullLink = `<a href="https://open.spotify.com/user/mattkubota" target="_blank" rel="noopener noreferrer">last heard ${spotifyData.artist}</a>`;
+                combinedWidget.innerHTML = time + " and " + fullLink;
                 combinedWidget.classList.remove("currently-playing");
               }
             } else {
