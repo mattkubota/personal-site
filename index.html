@@ -168,6 +168,7 @@
         <div class="widgets" id="widgets">
           <span class="weather-icon" id="weather-icon">🌤️</span>
           <span class="local-time" id="local-time">12:00 PM</span>
+          <span class="spotify-track" id="spotify-track">♪ Loading...</span>
         </div>
       </div>
     </footer>
@@ -225,8 +226,33 @@
           }
         }
 
-        // Load weather once and update time every minute
+        // Spotify widget
+        async function loadSpotify() {
+          try {
+            const response = await fetch("/api/spotify");
+            if (response.ok) {
+              const spotify = await response.json();
+              const spotifyTrack = document.getElementById("spotify-track");
+
+              if (spotifyTrack && spotify.track && spotify.artist) {
+                spotifyTrack.textContent = `♪ ${spotify.track} - ${spotify.artist}`;
+                spotifyTrack.title = `Last played: ${spotify.track} by ${spotify.artist}`;
+              } else if (spotifyTrack) {
+                spotifyTrack.textContent = "♪ No recent tracks";
+              }
+            }
+          } catch (error) {
+            console.log("Spotify data unavailable");
+            const spotifyTrack = document.getElementById("spotify-track");
+            if (spotifyTrack) {
+              spotifyTrack.textContent = "♪ Music offline";
+            }
+          }
+        }
+
+        // Load widgets once and update time every minute
         loadWeather();
+        loadSpotify();
         updateLocalTime();
         setInterval(updateLocalTime, 60000); // Update every minute
       });
