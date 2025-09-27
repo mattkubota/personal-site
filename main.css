@@ -152,7 +152,6 @@ footer,
   align-items: baseline;
 }
 
-
 /* Homepage specific spacing */
 body:has(.bio) .header {
   margin-top: var(--space-4xl);
@@ -224,7 +223,6 @@ body:has(.bio) .header {
   opacity: 1;
 }
 
-
 @keyframes ellipsis {
   0% {
     content: "";
@@ -289,7 +287,6 @@ body:has(.bio) .header {
 .subhead {
   font-size: var(--font-size-base);
   color: var(--color-text-muted);
-  font-weight: var(--font-weight-bold);
   margin-top: var(--space-xs);
 }
 
