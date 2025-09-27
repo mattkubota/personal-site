@@ -39,13 +39,13 @@
   </head>
 
   <body>
-    <header class="header">
+    <header class="header section-enter">
       <h1 class="name">Matt Kubota</h1>
       <div class="status">Open to work</div>
     </header>
 
     <main>
-      <section class="bio">
+      <section class="bio section-enter">
         <p>
           Senior Product Designer with experience creating user-centered
           solutions for complex problems. I focus on accessibility, performance,
@@ -58,7 +58,12 @@
             target="_blank"
             rel="noopener noreferrer"
             >Dribbble<span class="visually-hidden"> (opens in new tab)</span></a
-          ><svg class="external-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          ><svg
+            class="external-icon"
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+            focusable="false"
+          >
             <path
               d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"
             ></path>
@@ -86,7 +91,12 @@
             target="_blank"
             rel="noopener noreferrer"
             >email<span class="visually-hidden"> (opens in new tab)</span></a
-          ><svg class="external-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          ><svg
+            class="external-icon"
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+            focusable="false"
+          >
             <path
               d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"
             ></path>
@@ -109,7 +119,7 @@
         </p>
       </section>
 
-      <section class="selected-work">
+      <section class="selected-work section-enter">
         <h2>Selected Work</h2>
         <div class="project-list">
           <div class="project-row">
@@ -139,7 +149,7 @@
         </div>
       </section>
 
-      <section class="side-projects" id="side-projects">
+      <section class="side-projects section-enter" id="side-projects">
         <h2>Side Projects</h2>
         <div class="project-list">
           <div class="project-row">
@@ -152,7 +162,7 @@
       </section>
     </main>
 
-    <footer class="footer">
+    <footer class="footer section-enter">
       <div class="footer-content">
         <div class="last-updated">Updated September 25, 2025</div>
         <div class="widgets" id="widgets">
@@ -164,15 +174,22 @@
 
     <!-- Widgets -->
     <script>
-      document.addEventListener('DOMContentLoaded', function() {
+      document.addEventListener("DOMContentLoaded", function () {
+        // Staggered section animations
+        const sections = document.querySelectorAll(".section-enter");
+        sections.forEach((section, index) => {
+          setTimeout(() => {
+            section.classList.add("animate");
+          }, index * 200); // 200ms stagger between sections
+        });
         // Weather widget
         async function loadWeather() {
           try {
-            const response = await fetch('/api/weather');
+            const response = await fetch("/api/weather");
             if (response.ok) {
               const weather = await response.json();
-              const weatherIcon = document.getElementById('weather-icon');
-              const weatherWidget = document.getElementById('weather-widget');
+              const weatherIcon = document.getElementById("weather-icon");
+              const weatherWidget = document.getElementById("weather-widget");
 
               if (weatherIcon && weather.icon) {
                 weatherIcon.textContent = weather.icon;
@@ -181,27 +198,27 @@
 
               // Show the weather icon with fade-in
               if (weatherIcon) {
-                weatherIcon.classList.add('loaded');
+                weatherIcon.classList.add("loaded");
               }
             }
           } catch (error) {
-            console.log('Weather data unavailable');
+            console.log("Weather data unavailable");
             // Show icon anyway with default icon
-            const weatherIcon = document.getElementById('weather-icon');
+            const weatherIcon = document.getElementById("weather-icon");
             if (weatherIcon) {
-              weatherIcon.classList.add('loaded');
+              weatherIcon.classList.add("loaded");
             }
           }
         }
 
         // Local time widget
         function updateLocalTime() {
-          const localTime = document.getElementById('local-time');
+          const localTime = document.getElementById("local-time");
           if (localTime) {
-            const currentTime = new Date().toLocaleTimeString('en-US', {
-              timeZone: 'America/New_York',
-              hour: 'numeric',
-              minute: '2-digit',
+            const currentTime = new Date().toLocaleTimeString("en-US", {
+              timeZone: "America/New_York",
+              hour: "numeric",
+              minute: "2-digit",
               hour12: true,
             });
             localTime.textContent = currentTime;

@@ -417,6 +417,23 @@ section {
 }
 
 /* ==========================================================================
+   PAGE LOAD ANIMATIONS
+   ========================================================================== */
+
+.section-enter {
+  opacity: 0;
+  filter: blur(8px);
+  transform: translateY(20px);
+  transition: opacity 0.5s ease, filter 0.5s ease, transform 0.5s ease;
+}
+
+.section-enter.animate {
+  opacity: 1;
+  filter: blur(0);
+  transform: translateY(0);
+}
+
+/* ==========================================================================
    ACCESSIBILITY
    ========================================================================== */
 
@@ -425,5 +442,12 @@ section {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+  }
+
+  .section-enter {
+    opacity: 1;
+    filter: none;
+    transform: none;
+    transition: none;
   }
 }
