@@ -44,12 +44,8 @@
         <div class="name-status">
           <h1 class="name">Matt Kubota</h1>
           <div class="subhead">Product Designer</div>
-          <div class="status">Open to work</div>
         </div>
-        <div class="header-widgets" id="header-widgets">
-          <span class="weather-icon" id="weather-icon">🌤️</span>
-          <span class="local-time" id="local-time">12:00 PM</span>
-        </div>
+        <div class="status">Open to work</div>
       </div>
     </header>
 
@@ -173,21 +169,9 @@
 
     <footer class="footer section-enter">
       <div class="footer-content">
-        <div class="spotify-widget">
-          <a
-            href="https://open.spotify.com/user/mattkubota"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="spotify-link"
-          >
-            <svg class="spotify-icon" viewBox="0 0 24 24" aria-hidden="true">
-              <path
-                d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.42 1.56-.299.421-1.02.599-1.559.3z"
-              />
-            </svg>
-          </a>
-          <span class="spotify-text">Listening to</span>
-          <span class="spotify-track" id="spotify-track">Loading...</span>
+        <div class="widgets">
+          <span class="weather-icon" id="weather-icon">🌤️</span>
+          <span class="combined-widget" id="combined-widget">12:00 PM and listening to Loading...</span>
         </div>
         <div class="last-updated">Updated September 25, 2025</div>
       </div>
@@ -196,6 +180,9 @@
     <!-- Widgets -->
     <script>
       document.addEventListener("DOMContentLoaded", function () {
+        // Global variable to store current Spotify data
+        let currentSpotifyData = null;
+
         // Staggered section animations
         const sections = document.querySelectorAll(".section-enter");
         sections.forEach((section, index) => {
@@ -233,15 +220,36 @@
 
         // Local time widget
         function updateLocalTime() {
-          const localTime = document.getElementById("local-time");
-          if (localTime) {
-            const currentTime = new Date().toLocaleTimeString("en-US", {
-              timeZone: "America/New_York",
-              hour: "numeric",
-              minute: "2-digit",
-              hour12: true,
-            });
-            localTime.textContent = currentTime;
+          const currentTime = new Date().toLocaleTimeString("en-US", {
+            timeZone: "America/New_York",
+            hour: "numeric",
+            minute: "2-digit",
+            hour12: true,
+          });
+
+          // Update the combined widget with preserved Spotify data
+          updateCombinedWidget(currentTime, currentSpotifyData);
+        }
+
+        // Combined widget update function
+        function updateCombinedWidget(time, spotifyData = null) {
+          const combinedWidget = document.getElementById("combined-widget");
+          if (combinedWidget) {
+            if (spotifyData && spotifyData.artist) {
+              if (spotifyData.isCurrentlyPlaying) {
+                const listeningLink = `<a href="https://open.spotify.com/user/mattkubota" target="_blank" rel="noopener noreferrer">listening to</a>`;
+                combinedWidget.innerHTML = time + " and " + listeningLink + " " + spotifyData.artist;
+                combinedWidget.classList.add("currently-playing");
+              } else {
+                const lastHeardLink = `<a href="https://open.spotify.com/user/mattkubota" target="_blank" rel="noopener noreferrer">last heard</a>`;
+                combinedWidget.innerHTML = time + " and " + lastHeardLink + " " + spotifyData.artist;
+                combinedWidget.classList.remove("currently-playing");
+              }
+            } else {
+              // Just show time when no Spotify data
+              combinedWidget.textContent = time;
+              combinedWidget.classList.remove("currently-playing");
+            }
           }
         }
 
@@ -251,46 +259,46 @@
             const response = await fetch("/api/spotify");
             if (response.ok) {
               const spotify = await response.json();
-              const spotifyTrack = document.getElementById("spotify-track");
 
-              if (spotifyTrack && spotify.artist) {
-                spotifyTrack.textContent = spotify.artist;
-                const spotifyText = document.querySelector(".spotify-text");
+              // Store Spotify data globally
+              currentSpotifyData = spotify;
 
-                // Update text and class based on currently playing status
-                if (spotify.isCurrentlyPlaying) {
-                  spotifyTrack.classList.add("currently-playing");
-                  spotifyTrack.title = `Currently listening to ${spotify.artist}`;
-                  if (spotifyText) spotifyText.textContent = "Listening to";
-                } else {
-                  spotifyTrack.classList.remove("currently-playing");
-                  spotifyTrack.title = `Last played by ${spotify.artist}`;
-                  if (spotifyText) spotifyText.textContent = "Recently played";
-                }
-              } else if (spotifyTrack) {
-                spotifyTrack.classList.remove("currently-playing");
-                spotifyTrack.textContent = "No recent tracks";
-                const spotifyText = document.querySelector(".spotify-text");
-                if (spotifyText) spotifyText.textContent = "Listening to";
-              }
+              // Get current time and update combined widget
+              const currentTime = new Date().toLocaleTimeString("en-US", {
+                timeZone: "America/New_York",
+                hour: "numeric",
+                minute: "2-digit",
+                hour12: true,
+              });
 
-              // Show the entire spotify widget with fade-in
-              const spotifyWidget = document.querySelector(".spotify-widget");
-              if (spotifyWidget) {
-                spotifyWidget.classList.add("loaded");
+              updateCombinedWidget(currentTime, currentSpotifyData);
+
+              // Show the entire widgets container with fade-in
+              const widgets = document.querySelector(".widgets");
+              if (widgets) {
+                widgets.classList.add("loaded");
               }
             }
           } catch (error) {
             console.log("Spotify data unavailable");
-            const spotifyTrack = document.getElementById("spotify-track");
-            if (spotifyTrack) {
-              spotifyTrack.textContent = "Music offline";
-            }
 
-            // Show the entire spotify widget with fade-in
-            const spotifyWidget = document.querySelector(".spotify-widget");
-            if (spotifyWidget) {
-              spotifyWidget.classList.add("loaded");
+            // Store null globally (no Spotify data)
+            currentSpotifyData = null;
+
+            // Get current time and update combined widget with no Spotify data
+            const currentTime = new Date().toLocaleTimeString("en-US", {
+              timeZone: "America/New_York",
+              hour: "numeric",
+              minute: "2-digit",
+              hour12: true,
+            });
+
+            updateCombinedWidget(currentTime, currentSpotifyData);
+
+            // Show the entire widgets container with fade-in
+            const widgets = document.querySelector(".widgets");
+            if (widgets) {
+              widgets.classList.add("loaded");
             }
           }
         }

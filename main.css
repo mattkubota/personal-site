@@ -152,17 +152,6 @@ footer,
   align-items: baseline;
 }
 
-.header-widgets {
-  display: flex;
-  align-items: baseline;
-  gap: var(--space-sm);
-  font-size: var(--font-size-sm);
-  color: var(--color-text-footer);
-}
-
-.header-widgets .local-time {
-  color: var(--color-text-muted);
-}
 
 /* Homepage specific spacing */
 body:has(.bio) .header {
@@ -174,7 +163,6 @@ body:has(.bio) .header {
   align-items: center;
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-normal);
-  margin-top: var(--space-md);
   color: var(--color-text-muted);
   /* Non-interactive element - not in tab order */
   -webkit-user-select: none;
@@ -186,10 +174,41 @@ body:has(.bio) .header {
   align-items: center;
   gap: var(--space-sm);
   font-size: var(--font-size-sm);
-  color: #999999;
+  color: var(--color-text-footer);
   /* Non-interactive element - not in tab order */
   -webkit-user-select: none;
   user-select: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.widgets.loaded {
+  opacity: 1;
+}
+
+.combined-widget {
+  font-weight: var(--font-weight-normal);
+  color: var(--color-text-footer);
+}
+
+.combined-widget a {
+  color: var(--color-text-footer);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.25em;
+}
+
+.combined-widget a:hover,
+.combined-widget a:focus-visible {
+  background-color: #1db954;
+  color: var(--color-bg);
+  text-decoration: none;
+}
+
+.combined-widget.currently-playing::after {
+  content: "...";
+  animation: ellipsis 1.5s infinite;
+  position: absolute;
 }
 
 .weather-icon {
@@ -205,66 +224,6 @@ body:has(.bio) .header {
   opacity: 1;
 }
 
-.local-time {
-  font-weight: var(--font-weight-normal);
-}
-
-.spotify-widget {
-  font-size: var(--font-size-sm);
-  color: var(--color-text-footer);
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
-
-.spotify-widget.loaded {
-  opacity: 1;
-}
-
-.spotify-link {
-  color: var(--color-text-footer);
-  text-decoration: none;
-  margin-right: var(--space-sm);
-}
-
-.spotify-link:hover .spotify-icon,
-.spotify-link:focus-visible .spotify-icon {
-  fill: #1db954;
-}
-
-.spotify-link:hover,
-.spotify-link:focus-visible {
-  background-color: transparent;
-}
-
-.spotify-icon {
-  width: 14px;
-  height: 14px;
-  fill: var(--color-text-footer);
-  position: relative;
-  top: 2px;
-}
-
-.spotify-text {
-  font-weight: var(--font-weight-normal);
-  margin-right: var(--space-xs);
-}
-
-.spotify-track {
-  font-weight: var(--font-weight-normal);
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  max-width: 200px;
-}
-
-.spotify-track.currently-playing::after {
-  content: "...";
-  animation: ellipsis 1.5s infinite;
-  position: absolute;
-}
 
 @keyframes ellipsis {
   0% {
@@ -285,7 +244,7 @@ body:has(.bio) .header {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .spotify-track.currently-playing::after {
+  .combined-widget.currently-playing::after {
     animation: none;
     content: "";
   }
