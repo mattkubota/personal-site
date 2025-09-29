@@ -194,32 +194,42 @@
         let currentSpotifyData = null;
 
         // Scramble text effect
-        function scrambleText(element, finalText) {
+        function scrambleText(element, finalText, callback) {
           const characters =
             "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+-=[]{}|;:,.<>?";
           const scrambleSpeed = 50; // milliseconds
           let iteration = 0;
 
+          // Create spans for each character
+          element.innerHTML = finalText
+            .split("")
+            .map((char) => `<span>${char}</span>`)
+            .join("");
+
+          const spans = element.querySelectorAll("span");
+
           const interval = setInterval(() => {
-            let scrambled = "";
-
-            for (let i = 0; i < finalText.length; i++) {
+            spans.forEach((span, i) => {
               if (finalText[i] === " ") {
-                scrambled += " ";
+                span.textContent = " ";
+                span.style.color = "";
               } else if (iteration > i) {
-                scrambled += finalText[i];
+                // Character is resolved - normal color
+                span.textContent = finalText[i];
+                span.style.color = "";
               } else {
-                scrambled +=
-                  characters[Math.floor(Math.random() * characters.length)];
+                // Character is scrambled - accent color
+                span.textContent = characters[Math.floor(Math.random() * characters.length)];
+                span.style.color = "var(--color-accent)";
               }
-            }
+            });
 
-            element.textContent = scrambled;
             iteration++;
 
             if (iteration > finalText.length + 2) {
               clearInterval(interval);
               element.textContent = finalText;
+              if (callback) callback();
             }
           }, scrambleSpeed);
         }
@@ -356,9 +366,20 @@
         const nameElement = document.querySelector(".name");
         if (nameElement) {
           const originalText = nameElement.textContent;
-          nameElement.addEventListener("mouseenter", () => {
-            scrambleText(nameElement, originalText);
-          });
+
+          function handleScramble() {
+            // Remove listener to prevent retriggering during DOM changes
+            nameElement.removeEventListener("mouseenter", handleScramble);
+
+            scrambleText(nameElement, originalText, () => {
+              // Re-add listener after animation completes
+              setTimeout(() => {
+                nameElement.addEventListener("mouseenter", handleScramble);
+              }, 100);
+            });
+          }
+
+          nameElement.addEventListener("mouseenter", handleScramble);
         }
 
         // Load widgets once and update time every minute

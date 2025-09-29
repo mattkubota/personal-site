@@ -61,7 +61,11 @@ body {
   --color-bg: #fefefe;
   --color-accent: #fc5200;
   --color-success: #1dab62;
-  --color-success-transparent: color-mix(in srgb, var(--color-success) 0%, transparent);
+  --color-success-transparent: color-mix(
+    in srgb,
+    var(--color-success) 0%,
+    transparent
+  );
   --color-spotify: #1db954;
   --color-border: #e5e5e5;
 
@@ -564,7 +568,8 @@ section {
   opacity: 0;
   filter: blur(8px);
   transform: translateY(20px);
-  transition: opacity var(--transition-base) ease, filter var(--transition-base) ease, transform var(--transition-base) ease;
+  transition: opacity var(--transition-base) ease,
+    filter var(--transition-base) ease, transform var(--transition-base) ease;
 }
 
 .section-enter.animate {
