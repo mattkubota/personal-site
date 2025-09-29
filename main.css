@@ -154,7 +154,7 @@ footer,
 
 /* Homepage specific spacing */
 body:has(.bio) .header {
-  margin-top: var(--space-4xl);
+  margin-top: var(--space-3xl);
 }
 
 .status {
@@ -188,6 +188,10 @@ body:has(.bio) .header {
 .combined-widget {
   font-weight: var(--font-weight-normal);
   color: var(--color-text-footer);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 40ch;
 }
 
 .combined-widget a {
@@ -204,23 +208,9 @@ body:has(.bio) .header {
   text-decoration: none;
 }
 
-.combined-widget.currently-playing::after {
+.combined-widget.currently-playing.short-text::after {
   content: "...";
   animation: ellipsis 1.5s infinite;
-  position: absolute;
-}
-
-.weather-icon {
-  font-size: 1.5rem;
-  line-height: 1;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-  position: relative;
-  top: 2px;
-}
-
-.weather-icon.loaded {
-  opacity: 1;
 }
 
 @keyframes ellipsis {
@@ -242,10 +232,21 @@ body:has(.bio) .header {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .combined-widget.currently-playing::after {
+  .combined-widget.currently-playing.short-text::after {
     animation: none;
     content: "";
   }
+}
+
+.weather-icon {
+  font-size: 1.5rem;
+  line-height: 1;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.weather-icon.loaded {
+  opacity: 1;
 }
 
 .status::before {
@@ -291,8 +292,8 @@ body:has(.bio) .header {
 }
 
 .footer {
-  margin-top: var(--space-4xl);
   padding-top: var(--space-2xl);
+  padding-bottom: var(--space-xl);
   border-top: 1px solid var(--color-border);
 }
 

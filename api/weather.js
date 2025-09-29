@@ -33,11 +33,13 @@ export default async function handler(req, res) {
     const data = await response.json();
 
     // Check if it's nighttime in Richmond, VA (UTC-5/-4)
-    const richmondTime = new Date().toLocaleString("en-US", {
+    const now = new Date();
+    const richmondHour = parseInt(now.toLocaleString("en-US", {
       timeZone: "America/New_York",
-    });
-    const currentHour = new Date(richmondTime).getHours();
-    const isNight = currentHour >= 20 || currentHour <= 6; // 8 PM to 6 AM
+      hour: "2-digit",
+      hour12: false
+    }));
+    const isNight = richmondHour >= 20 || richmondHour <= 6; // 8 PM to 6 AM
 
     let icon;
 

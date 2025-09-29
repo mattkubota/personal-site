@@ -235,20 +235,27 @@
         function updateCombinedWidget(time, spotifyData = null) {
           const combinedWidget = document.getElementById("combined-widget");
           if (combinedWidget) {
+            // Reset classes
+            combinedWidget.className = "combined-widget";
+
             if (spotifyData && spotifyData.artist) {
               if (spotifyData.isCurrentlyPlaying) {
+                const fullText = time + " and listening to " + spotifyData.artist;
                 const fullLink = `<a href="https://open.spotify.com/user/mattkubota" target="_blank" rel="noopener noreferrer">listening to ${spotifyData.artist}</a>`;
                 combinedWidget.innerHTML = time + " and " + fullLink;
+
+                // Add classes based on text length
                 combinedWidget.classList.add("currently-playing");
+                if (fullText.length <= 40) {
+                  combinedWidget.classList.add("short-text");
+                }
               } else {
                 const fullLink = `<a href="https://open.spotify.com/user/mattkubota" target="_blank" rel="noopener noreferrer">last heard ${spotifyData.artist}</a>`;
                 combinedWidget.innerHTML = time + " and " + fullLink;
-                combinedWidget.classList.remove("currently-playing");
               }
             } else {
               // Just show time when no Spotify data
               combinedWidget.textContent = time;
-              combinedWidget.classList.remove("currently-playing");
             }
           }
         }
