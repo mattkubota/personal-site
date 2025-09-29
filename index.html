@@ -171,7 +171,9 @@
       <div class="footer-content">
         <div class="widgets">
           <span class="weather-icon" id="weather-icon">🌤️</span>
-          <span class="combined-widget" id="combined-widget">12:00 PM and listening to Loading...</span>
+          <span class="combined-widget" id="combined-widget"
+            >12:00 PM and listening to Loading...</span
+          >
         </div>
         <div class="last-updated">Updated September 25, 2025</div>
       </div>
@@ -182,6 +184,37 @@
       document.addEventListener("DOMContentLoaded", function () {
         // Global variable to store current Spotify data
         let currentSpotifyData = null;
+
+        // Scramble text effect
+        function scrambleText(element, finalText) {
+          const characters =
+            "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+-=[]{}|;:,.<>?";
+          const scrambleSpeed = 50; // milliseconds
+          let iteration = 0;
+
+          const interval = setInterval(() => {
+            let scrambled = "";
+
+            for (let i = 0; i < finalText.length; i++) {
+              if (finalText[i] === " ") {
+                scrambled += " ";
+              } else if (iteration > i) {
+                scrambled += finalText[i];
+              } else {
+                scrambled +=
+                  characters[Math.floor(Math.random() * characters.length)];
+              }
+            }
+
+            element.textContent = scrambled;
+            iteration++;
+
+            if (iteration > finalText.length + 2) {
+              clearInterval(interval);
+              element.textContent = finalText;
+            }
+          }, scrambleSpeed);
+        }
 
         // Staggered section animations
         const sections = document.querySelectorAll(".section-enter");
@@ -240,7 +273,8 @@
 
             if (spotifyData && spotifyData.artist) {
               if (spotifyData.isCurrentlyPlaying) {
-                const fullText = time + " and listening to " + spotifyData.artist;
+                const fullText =
+                  time + " and listening to " + spotifyData.artist;
                 const fullLink = `<a href="https://open.spotify.com/user/mattkubota" target="_blank" rel="noopener noreferrer">listening to ${spotifyData.artist}</a>`;
                 combinedWidget.innerHTML = time + " and " + fullLink;
 
@@ -308,6 +342,15 @@
               widgets.classList.add("loaded");
             }
           }
+        }
+
+        // Add scramble effect to name
+        const nameElement = document.querySelector(".name");
+        if (nameElement) {
+          const originalText = nameElement.textContent;
+          nameElement.addEventListener("mouseenter", () => {
+            scrambleText(nameElement, originalText);
+          });
         }
 
         // Load widgets once and update time every minute

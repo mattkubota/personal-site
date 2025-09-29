@@ -197,6 +197,9 @@ body:has(.bio) .header {
   min-width: 0;
   flex: 1;
   max-width: 100%;
+  display: inline-block;
+  padding: var(--space-xs);
+  margin: calc(-1 * var(--space-xs));
 }
 
 .combined-widget a {
@@ -211,6 +214,11 @@ body:has(.bio) .header {
   background-color: #1db954;
   color: var(--color-bg);
   text-decoration: none;
+}
+
+.combined-widget a:focus-visible {
+  outline: 2px solid #1db954;
+  outline-offset: 2px;
 }
 
 .combined-widget.currently-playing.short-text::after {
@@ -308,6 +316,7 @@ body:has(.bio) .header {
   align-items: center;
   min-width: 0;
   gap: var(--space-lg);
+  padding: var(--space-sm) 0;
 }
 
 .last-updated {
