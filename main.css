@@ -179,6 +179,9 @@ body:has(.bio) .header {
   user-select: none;
   opacity: 0;
   transition: opacity 0.3s ease;
+  flex: 1;
+  min-width: 0;
+  max-width: 100%;
 }
 
 .widgets.loaded {
@@ -191,7 +194,9 @@ body:has(.bio) .header {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  max-width: 40ch;
+  min-width: 0;
+  flex: 1;
+  max-width: 100%;
 }
 
 .combined-widget a {
@@ -301,6 +306,8 @@ body:has(.bio) .header {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  min-width: 0;
+  gap: var(--space-lg);
 }
 
 .last-updated {
