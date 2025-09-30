@@ -260,39 +260,52 @@
             section.classList.add("animate");
           }, index * 200); // 200ms stagger between sections
         });
-        // Weather widget
-        async function loadWeather() {
+
+        // Helper function for widget loading
+        async function loadWidget(apiPath, onSuccess, elementSelector = null) {
           try {
-            const response = await fetch("/api/weather");
+            const response = await fetch(apiPath);
             if (response.ok) {
-              const weather = await response.json();
-              const weatherIcon = document.querySelector(".weather-icon");
+              const data = await response.json();
+              await onSuccess(data);
 
-              if (weatherIcon && weather.icon) {
-                weatherIcon.textContent = weather.icon;
-                weatherIcon.title = `${weather.description} in ${weather.city}`;
-              }
-
-              // Show the weather icon with fade-in
-              if (weatherIcon) {
-                weatherIcon.classList.add("loaded");
+              // Fade in the widget if selector provided
+              if (elementSelector) {
+                const element = document.querySelector(elementSelector);
+                if (element) {
+                  element.classList.add("loaded");
+                }
               }
             }
           } catch (error) {
-            console.log("Weather data unavailable");
-            // Don't show icon if we can't get data
+            console.log(`${apiPath} data unavailable`);
           }
         }
 
-        // Local time widget
-        function updateLocalTime() {
-          const currentTime = new Date().toLocaleTimeString("en-US", {
+        // Helper function to get current NYC time
+        function getCurrentNYCTime() {
+          return new Date().toLocaleTimeString("en-US", {
             timeZone: "America/New_York",
             hour: "numeric",
             minute: "2-digit",
             hour12: true,
           });
+        }
 
+        // Weather widget
+        async function loadWeather() {
+          await loadWidget("/api/weather", (weather) => {
+            const weatherIcon = document.querySelector(".weather-icon");
+            if (weatherIcon && weather.icon) {
+              weatherIcon.textContent = weather.icon;
+              weatherIcon.title = `${weather.description} in ${weather.city}`;
+            }
+          }, ".weather-icon");
+        }
+
+        // Local time widget
+        function updateLocalTime() {
+          const currentTime = getCurrentNYCTime();
           // Update the combined widget with preserved Spotify data
           updateCombinedWidget(currentTime, currentSpotifyData);
         }
@@ -329,51 +342,29 @@
 
         // Spotify widget
         async function loadSpotify() {
+          const updateWidget = (spotifyData) => {
+            currentSpotifyData = spotifyData;
+            const currentTime = getCurrentNYCTime();
+            updateCombinedWidget(currentTime, currentSpotifyData);
+          };
+
           try {
             const response = await fetch("/api/spotify");
             if (response.ok) {
               const spotify = await response.json();
-
-              // Store Spotify data globally
-              currentSpotifyData = spotify;
-
-              // Get current time and update combined widget
-              const currentTime = new Date().toLocaleTimeString("en-US", {
-                timeZone: "America/New_York",
-                hour: "numeric",
-                minute: "2-digit",
-                hour12: true,
-              });
-
-              updateCombinedWidget(currentTime, currentSpotifyData);
-
-              // Show the entire widgets container with fade-in
-              const widgets = document.querySelector(".widgets");
-              if (widgets) {
-                widgets.classList.add("loaded");
-              }
+              updateWidget(spotify);
+            } else {
+              updateWidget(null);
             }
           } catch (error) {
             console.log("Spotify data unavailable");
+            updateWidget(null);
+          }
 
-            // Store null globally (no Spotify data)
-            currentSpotifyData = null;
-
-            // Get current time and update combined widget with no Spotify data
-            const currentTime = new Date().toLocaleTimeString("en-US", {
-              timeZone: "America/New_York",
-              hour: "numeric",
-              minute: "2-digit",
-              hour12: true,
-            });
-
-            updateCombinedWidget(currentTime, currentSpotifyData);
-
-            // Show the entire widgets container with fade-in
-            const widgets = document.querySelector(".widgets");
-            if (widgets) {
-              widgets.classList.add("loaded");
-            }
+          // Always show the widgets container
+          const widgets = document.querySelector(".widgets");
+          if (widgets) {
+            widgets.classList.add("loaded");
           }
         }
 
@@ -410,14 +401,24 @@
             let currentRow = null;
             let currentMedia = null;
 
+            // Helper function to calculate parallax offset
+            function calculateParallaxOffset(mouseX, mouseY, rect, intensity) {
+              const normalizedX = (mouseX / rect.width) - 0.5;
+              const normalizedY = (mouseY / rect.height) - 0.5;
+              return {
+                x: normalizedX * intensity,
+                y: normalizedY * intensity
+              };
+            }
+
             projectRows.forEach((row) => {
               row.addEventListener("mouseenter", function () {
-                // If re-entering after leaving, disable transition briefly
+                // If re-entering after leaving, disable position transition briefly
                 if (!isHoveringList) {
-                  hoverBg.style.transition = "opacity 0.3s ease";
+                  hoverBg.classList.add("no-position-transition");
                   isHoveringList = true;
                 } else {
-                  hoverBg.style.transition = "top 0.4s cubic-bezier(0.34, 1.15, 0.64, 1), height 0.4s cubic-bezier(0.34, 1.15, 0.64, 1), opacity 0.3s ease, transform 0.2s ease";
+                  hoverBg.classList.remove("no-position-transition");
                 }
 
                 currentRow = row;
@@ -448,31 +449,17 @@
                   const mouseX = e.clientX - rowRect.left;
                   const mouseY = e.clientY - rowRect.top;
 
-                  // Calculate offset based on mouse position (normalized -1 to 1)
-                  const offsetX = ((mouseX / rowRect.width) - 0.5) * 16; // Max 8px shift
-                  const offsetY = ((mouseY / rowRect.height) - 0.5) * 16; // Max 8px shift
+                  // Calculate offsets for background and content
+                  const bgOffset = calculateParallaxOffset(mouseX, mouseY, rowRect, 16);
+                  const contentOffset = calculateParallaxOffset(mouseX, mouseY, rowRect, 4);
 
-                  updateBackgroundPosition(row, offsetX, offsetY);
-
-                  // Move content with mouse (smaller offset for subtlety)
-                  const contentOffsetX = ((mouseX / rowRect.width) - 0.5) * 4; // Max 2px shift
-                  const contentOffsetY = ((mouseY / rowRect.height) - 0.5) * 4; // Max 2px shift
-                  row.style.transform = `translate(${contentOffsetX}px, ${contentOffsetY}px)`;
-
-                  // Move media with mouse (medium offset)
-                  if (currentMedia) {
-                    const mediaOffsetX = ((mouseX / rowRect.width) - 0.5) * 8; // Max 4px shift
-                    const mediaOffsetY = ((mouseY / rowRect.height) - 0.5) * 8; // Max 4px shift
-                    currentMedia.style.transform = `translate(calc(-50% + ${mediaOffsetX}px), calc(-50% + ${mediaOffsetY}px)) scale(1)`;
-                  }
+                  updateBackgroundPosition(row, bgOffset.x, bgOffset.y);
+                  row.style.transform = `translate(${contentOffset.x}px, ${contentOffset.y}px)`;
                 }
               });
 
               row.addEventListener("mouseleave", function () {
                 row.style.transform = "translate(0, 0)";
-                if (currentMedia) {
-                  currentMedia.style.transform = "translate(-50%, -50%) scale(1)";
-                }
               });
             });
 
