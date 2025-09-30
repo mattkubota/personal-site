@@ -83,12 +83,14 @@
             >Twitter</a
           >.
         </p>
+        <a href="mailto:hello@mattkubota.com" class="button">Send me a message</a>
       </section>
 
       <section class="selected-work section-enter">
         <h2>Selected Work</h2>
         <div class="project-list">
-          <a href="projects/curbside-sos.html" class="project-row">
+          <div class="project-hover-bg"></div>
+          <a href="projects/curbside-sos.html" class="project-row" data-project="curbside-sos">
             <span class="project-name">Curbside SOS</span>
             <span class="project-year">2025</span>
             <span class="project-description"
@@ -96,7 +98,7 @@
               help.</span
             >
           </a>
-          <a href="projects/grubhub-offers.html" class="project-row">
+          <a href="projects/grubhub-offers.html" class="project-row" data-project="grubhub-offers">
             <span class="project-name">Grubhub Offers</span>
             <span class="project-year">2024</span>
             <span class="project-description"
@@ -104,7 +106,7 @@
               order conversion.</span
             >
           </a>
-          <a href="projects/grubhub-pickup.html" class="project-row">
+          <a href="projects/grubhub-pickup.html" class="project-row" data-project="grubhub-pickup">
             <span class="project-name">Grubhub Pickup</span>
             <span class="project-year">2022–2023</span>
             <span class="project-description"
@@ -112,7 +114,7 @@
               restaurant operations.</span
             >
           </a>
-          <a href="projects/grubhub-internal-tools.html" class="project-row">
+          <a href="projects/grubhub-internal-tools.html" class="project-row" data-project="grubhub-internal-tools">
             <span class="project-name">Grubhub Internal Tools</span>
             <span class="project-year">2021–2022</span>
             <span class="project-description"
@@ -120,7 +122,7 @@
               teams.</span
             >
           </a>
-          <a href="projects/vocable-aac.html" class="project-row">
+          <a href="projects/vocable-aac.html" class="project-row" data-project="vocable-aac">
             <span class="project-name">Vocable AAC</span>
             <span class="project-year">2018–2021</span>
             <span class="project-description"
@@ -128,6 +130,21 @@
               using eye gaze.</span
             >
           </a>
+        </div>
+        <div class="project-media" data-project="curbside-sos">
+          <img src="https://placehold.co/280x560/fc5200/white?text=Curbside+SOS" alt="" loading="lazy" />
+        </div>
+        <div class="project-media" data-project="grubhub-offers">
+          <img src="https://placehold.co/480x320/1dab62/white?text=Grubhub+Offers" alt="" loading="lazy" />
+        </div>
+        <div class="project-media" data-project="grubhub-pickup">
+          <img src="https://placehold.co/400x400/1db954/white?text=Grubhub+Pickup" alt="" loading="lazy" />
+        </div>
+        <div class="project-media" data-project="grubhub-internal-tools">
+          <img src="https://placehold.co/320x480/6d6d6d/white?text=Internal+Tools" alt="" loading="lazy" />
+        </div>
+        <div class="project-media" data-project="vocable-aac">
+          <img src="https://placehold.co/500x300/4a90e2/white?text=Vocable+AAC" alt="" loading="lazy" />
         </div>
       </section>
 
@@ -378,6 +395,113 @@
           }
 
           nameElement.addEventListener("mouseenter", handleScramble);
+        }
+
+        // Project hover background effect
+        const selectedWork = document.querySelector(".selected-work");
+        if (selectedWork) {
+          const projectList = selectedWork.querySelector(".project-list");
+          const projectRows = selectedWork.querySelectorAll(".project-row");
+          const hoverBg = selectedWork.querySelector(".project-hover-bg");
+          const allMedia = selectedWork.querySelectorAll(".project-media");
+
+          if (projectList && hoverBg && projectRows.length > 0) {
+            let isHoveringList = false;
+            let currentRow = null;
+            let currentMedia = null;
+
+            projectRows.forEach((row) => {
+              row.addEventListener("mouseenter", function () {
+                // If re-entering after leaving, disable transition briefly
+                if (!isHoveringList) {
+                  hoverBg.style.transition = "opacity 0.3s ease";
+                  isHoveringList = true;
+                } else {
+                  hoverBg.style.transition = "top 0.4s cubic-bezier(0.34, 1.15, 0.64, 1), height 0.4s cubic-bezier(0.34, 1.15, 0.64, 1), opacity 0.3s ease, transform 0.2s ease";
+                }
+
+                currentRow = row;
+                updateBackgroundPosition(row, 0, 0);
+                hoverBg.style.opacity = "1";
+
+                // Hide all media first
+                allMedia.forEach(m => {
+                  m.style.opacity = "0";
+                  m.style.filter = "blur(8px)";
+                  m.style.transform = "translate(-50%, -50%) scale(0.95)";
+                });
+
+                // Show only current row's media using data attribute
+                const projectId = row.getAttribute("data-project");
+                const media = selectedWork.querySelector(`.project-media[data-project="${projectId}"]`);
+                if (media) {
+                  currentMedia = media;
+                  media.style.opacity = "1";
+                  media.style.filter = "blur(0)";
+                  media.style.transform = "translate(-50%, -50%) scale(1)";
+                }
+              });
+
+              row.addEventListener("mousemove", function (e) {
+                if (currentRow === row) {
+                  const rowRect = row.getBoundingClientRect();
+                  const mouseX = e.clientX - rowRect.left;
+                  const mouseY = e.clientY - rowRect.top;
+
+                  // Calculate offset based on mouse position (normalized -1 to 1)
+                  const offsetX = ((mouseX / rowRect.width) - 0.5) * 16; // Max 8px shift
+                  const offsetY = ((mouseY / rowRect.height) - 0.5) * 16; // Max 8px shift
+
+                  updateBackgroundPosition(row, offsetX, offsetY);
+
+                  // Move content with mouse (smaller offset for subtlety)
+                  const contentOffsetX = ((mouseX / rowRect.width) - 0.5) * 4; // Max 2px shift
+                  const contentOffsetY = ((mouseY / rowRect.height) - 0.5) * 4; // Max 2px shift
+                  row.style.transform = `translate(${contentOffsetX}px, ${contentOffsetY}px)`;
+
+                  // Move media with mouse (medium offset)
+                  if (currentMedia) {
+                    const mediaOffsetX = ((mouseX / rowRect.width) - 0.5) * 8; // Max 4px shift
+                    const mediaOffsetY = ((mouseY / rowRect.height) - 0.5) * 8; // Max 4px shift
+                    currentMedia.style.transform = `translate(calc(-50% + ${mediaOffsetX}px), calc(-50% + ${mediaOffsetY}px)) scale(1)`;
+                  }
+                }
+              });
+
+              row.addEventListener("mouseleave", function () {
+                row.style.transform = "translate(0, 0)";
+                if (currentMedia) {
+                  currentMedia.style.transform = "translate(-50%, -50%) scale(1)";
+                }
+              });
+            });
+
+            function updateBackgroundPosition(row, offsetX, offsetY) {
+              const listRect = projectList.getBoundingClientRect();
+              const rowRect = row.getBoundingClientRect();
+
+              const top = rowRect.top - listRect.top;
+              const height = rowRect.height;
+
+              hoverBg.style.top = top + "px";
+              hoverBg.style.height = height + "px";
+              hoverBg.style.transform = `translate(${offsetX}px, ${offsetY}px)`;
+            }
+
+            projectList.addEventListener("mouseleave", function () {
+              hoverBg.style.opacity = "0";
+              isHoveringList = false;
+              currentRow = null;
+
+              // Hide all media when leaving the list
+              allMedia.forEach(m => {
+                m.style.opacity = "0";
+                m.style.filter = "blur(8px)";
+                m.style.transform = "translate(-50%, -50%) scale(0.95)";
+              });
+              currentMedia = null;
+            });
+          }
         }
 
         // Load widgets once and update time every minute
