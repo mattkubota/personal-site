@@ -261,11 +261,7 @@
             }
           } catch (error) {
             console.log("Weather data unavailable");
-            // Show icon anyway with default icon
-            const weatherIcon = document.querySelector(".weather-icon");
-            if (weatherIcon) {
-              weatherIcon.classList.add("loaded");
-            }
+            // Don't show icon if we can't get data
           }
         }
 

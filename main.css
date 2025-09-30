@@ -56,8 +56,8 @@ body {
 
   /* Colors */
   --color-text: #1a1a1a;
-  --color-text-muted: #666666;
-  --color-text-footer: #999999;
+  --color-text-muted: #6d6d6d;
+  --color-text-footer: #8e8e8e;
   --color-bg: #fefefe;
   --color-accent: #fc5200;
   --color-success: #1dab62;
@@ -113,9 +113,7 @@ p {
 /* Links */
 a {
   color: var(--color-accent);
-  text-decoration: underline;
-  text-decoration-thickness: 1px;
-  text-underline-offset: 0.25em;
+  text-decoration: none;
 }
 
 a:hover,
