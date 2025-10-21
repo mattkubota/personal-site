@@ -457,7 +457,7 @@ section {
 }
 
 /* Project detail page media */
-.project-media {
+.project-content .project-media {
   margin: var(--space-3xl) 0;
 }
 
