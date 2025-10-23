@@ -31,11 +31,11 @@
   </head>
 
   <body>
-    <nav class="back-nav">
+    <nav class="back-nav section-enter">
       <a href="../" class="back-link">← Index</a>
     </nav>
 
-    <main>
+    <main class="section-enter">
       <div class="project">
         <header class="project-header">
           <h1 class="project-title">Curbside SOS</h1>
@@ -422,30 +422,40 @@
       </div>
     </main>
 
-    <nav class="back-nav">
+    <nav class="back-nav section-enter">
       <a href="../" class="back-link">← Index</a>
     </nav>
 
     <script>
-      // Highlight effect on scroll
-      const highlights = document.querySelectorAll(
-        ".highlight, .highlight-negative"
-      );
-      const observer = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-              entry.target.classList.add("in-view");
-            }
-          });
-        },
-        {
-          threshold: 1.0,
-          rootMargin: "-100px 0px",
-        }
-      );
+      document.addEventListener("DOMContentLoaded", function () {
+        // Section entrance animations
+        const sections = document.querySelectorAll(".section-enter");
+        sections.forEach((section, index) => {
+          setTimeout(() => {
+            section.classList.add("animate");
+          }, index * 200);
+        });
 
-      highlights.forEach((highlight) => observer.observe(highlight));
+        // Highlight effect on scroll
+        const highlights = document.querySelectorAll(
+          ".highlight, .highlight-negative"
+        );
+        const observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                entry.target.classList.add("in-view");
+              }
+            });
+          },
+          {
+            threshold: 1.0,
+            rootMargin: "-100px 0px",
+          }
+        );
+
+        highlights.forEach((highlight) => observer.observe(highlight));
+      });
     </script>
   </body>
 </html>

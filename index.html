@@ -79,7 +79,7 @@
         </p>
         <p>
           <a
-            href="assets/files/resume.pdf"
+            href="assets/files/matt-kubota_resume.pdf"
             target="_blank"
             rel="noopener noreferrer"
             >View my resume</a
@@ -132,8 +132,10 @@
           <a href="projects/curbside-sos.html" class="project-row">
             <div class="project-media">
               <img
-                src="assets/curbside-sos.png"
+                src="assets/curbside-sos.webp"
                 alt="Curbside SOS project preview"
+                width="600"
+                height="400"
                 loading="lazy"
               />
             </div>
@@ -149,6 +151,8 @@
               <img
                 src="assets/grubhub-offers.png"
                 alt="Grubhub Offers project preview"
+                width="600"
+                height="400"
                 loading="lazy"
               />
             </div>
@@ -164,6 +168,8 @@
               <img
                 src="assets/grubhub-pickup.png"
                 alt="Grubhub Pickup project preview"
+                width="600"
+                height="400"
                 loading="lazy"
               />
             </div>
@@ -179,6 +185,8 @@
               <img
                 src="assets/vocable-aac.png"
                 alt="Vocable AAC project preview"
+                width="600"
+                height="400"
                 loading="lazy"
               />
             </div>
@@ -323,7 +331,7 @@
               }
             }
           } catch (error) {
-            console.log(`${apiPath} data unavailable`);
+            // Widget data unavailable, fail silently
           }
         }
 
@@ -406,7 +414,6 @@
               updateWidget(null);
             }
           } catch (error) {
-            console.log("Spotify data unavailable");
             updateWidget(null);
           }
 

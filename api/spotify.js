@@ -13,7 +13,6 @@ export default async function handler(req, res) {
   const REFRESH_TOKEN = process.env.SPOTIFY_REFRESH_TOKEN;
 
   if (!CLIENT_ID || !CLIENT_SECRET || !REFRESH_TOKEN) {
-    console.error("Missing Spotify environment variables");
     return res.status(500).json({ error: "Spotify API not configured" });
   }
 
@@ -32,7 +31,6 @@ export default async function handler(req, res) {
     });
 
     if (!tokenResponse.ok) {
-      console.error("Token refresh failed:", tokenResponse.status);
       throw new Error("Failed to refresh access token");
     }
 
@@ -73,7 +71,6 @@ export default async function handler(req, res) {
     );
 
     if (!recentlyPlayedResponse.ok) {
-      console.error("Recently played request failed:", recentlyPlayedResponse.status);
       throw new Error("Failed to fetch recently played tracks");
     }
 
@@ -96,7 +93,6 @@ export default async function handler(req, res) {
       isCurrentlyPlaying: false,
     });
   } catch (error) {
-    console.error("Spotify API error:", error);
     res.status(500).json({ error: "Failed to fetch Spotify data" });
   }
 }

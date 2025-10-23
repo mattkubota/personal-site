@@ -9,15 +9,11 @@ export default async function handler(req, res) {
   }
 
   const API_KEY = process.env.OPENWEATHER_API_KEY;
-  const CITY = "Richmond"; // Change this to your city
+  const CITY = "Richmond";
 
   if (!API_KEY) {
-    console.error("Missing OPENWEATHER_API_KEY environment variable");
     return res.status(500).json({ error: "Weather API key not configured" });
   }
-
-  console.log("API Key present:", !!API_KEY);
-  console.log("Making request to OpenWeather for:", CITY);
 
   try {
     const response = await fetch(
@@ -25,8 +21,6 @@ export default async function handler(req, res) {
     );
 
     if (!response.ok) {
-      const errorText = await response.text();
-      console.error("OpenWeather API error:", response.status, errorText);
       throw new Error(`Weather API request failed: ${response.status}`);
     }
 
@@ -34,11 +28,13 @@ export default async function handler(req, res) {
 
     // Check if it's nighttime in Richmond, VA (UTC-5/-4)
     const now = new Date();
-    const richmondHour = parseInt(now.toLocaleString("en-US", {
-      timeZone: "America/New_York",
-      hour: "2-digit",
-      hour12: false
-    }));
+    const richmondHour = parseInt(
+      now.toLocaleString("en-US", {
+        timeZone: "America/New_York",
+        hour: "2-digit",
+        hour12: false,
+      })
+    );
     const isNight = richmondHour >= 20 || richmondHour <= 6; // 8 PM to 6 AM
 
     let icon;
@@ -84,8 +80,15 @@ export default async function handler(req, res) {
       const e = 2 * (c - 19) - Math.floor((year - 1900 - 100 * c) / 4);
       const f = month + Math.floor((9 + month) / 12);
       const g = year + Math.floor((month + 9) / 12);
-      const d = day + Math.floor((153 * f - 457) / 5) + 365 * g + Math.floor(g / 4) - Math.floor(g / 100) + Math.floor(g / 400) - 306;
-      const phase = ((d + e) % 30);
+      const d =
+        day +
+        Math.floor((153 * f - 457) / 5) +
+        365 * g +
+        Math.floor(g / 4) -
+        Math.floor(g / 100) +
+        Math.floor(g / 400) -
+        306;
+      const phase = (d + e) % 30;
 
       // Convert phase to emoji
       if (phase < 2 || phase > 28) return "🌑"; // New moon
@@ -105,7 +108,6 @@ export default async function handler(req, res) {
       city: data.name,
     });
   } catch (error) {
-    console.error("Weather API error:", error);
     res.status(500).json({ error: "Failed to fetch weather data" });
   }
 }

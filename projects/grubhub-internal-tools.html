@@ -28,11 +28,11 @@
   </head>
 
   <body>
-    <nav class="back-nav">
+    <nav class="back-nav section-enter">
       <a href="../" class="back-link">← Index</a>
     </nav>
 
-    <main>
+    <main class="section-enter">
       <div class="project">
         <header class="project-header">
           <h1 class="project-title">Grubhub Internal Tools</h1>
@@ -94,8 +94,19 @@
       </div>
     </main>
 
-    <nav class="back-nav">
+    <nav class="back-nav section-enter">
       <a href="../" class="back-link">← Index</a>
     </nav>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const sections = document.querySelectorAll(".section-enter");
+        sections.forEach((section, index) => {
+          setTimeout(() => {
+            section.classList.add("animate");
+          }, index * 200);
+        });
+      });
+    </script>
   </body>
 </html>
