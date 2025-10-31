@@ -54,8 +54,7 @@
 
         <div class="project-content">
           <figure class="project-media">
-            <div class="placeholder-image">Key screens of redesign</div>
-            <figcaption class="media-caption">Key screens of redesign</figcaption>
+            <video src="../assets/curbside-sos_prototype.webm" autoplay loop muted playsinline></video>
           </figure>
 
           <div class="project-text">
@@ -90,8 +89,7 @@
           </div>
 
           <figure class="project-media">
-            <div class="placeholder-image">Screenshot of old app</div>
-            <figcaption class="media-caption">Screenshot of old app</figcaption>
+            <img src="../assets/curbside-sos_old-app.jpg" alt="Screenshot of old app showing poor user experience" loading="lazy">
           </figure>
 
           <div class="project-text">
@@ -177,8 +175,7 @@
           </div>
 
           <figure class="project-media">
-            <div class="placeholder-image">All states of job</div>
-            <figcaption class="media-caption">All states of job</figcaption>
+            <img src="../assets/curbside-sos_job-states.jpg" alt="All states of job workflow" loading="lazy">
           </figure>
 
           <div class="project-text">
@@ -209,10 +206,7 @@
           </div>
 
           <figure class="project-media">
-            <div class="placeholder-image">
-              Side-by-side comparison of the two pricing approaches explored
-            </div>
-            <figcaption class="media-caption">Side-by-side comparison of the two pricing approaches explored</figcaption>
+            <img src="../assets/curbside-sos_pricing-comparison.jpg" alt="Side-by-side comparison of the two pricing approaches explored" loading="lazy">
           </figure>
 
           <div class="project-text">
@@ -230,10 +224,7 @@
           </div>
 
           <figure class="project-media">
-            <div class="placeholder-image">
-              Before/after of notification design
-            </div>
-            <figcaption class="media-caption">Before/after of notification design</figcaption>
+            <img src="../assets/curbside-sos_notifications.jpg" alt="Before and after comparison of notification design" loading="lazy">
           </figure>
 
           <div class="project-text">
@@ -272,11 +263,7 @@
           </div>
 
           <figure class="project-media">
-            <div class="placeholder-image">
-              Prototype showing notification → automatic bottom sheet appearance
-              → single tap to accept
-            </div>
-            <figcaption class="media-caption">Prototype showing notification → automatic bottom sheet appearance → single tap to accept</figcaption>
+            <img src="../assets/curbside-sos_flow.jpg" alt="Prototype showing notification to automatic bottom sheet appearance to single tap to accept" loading="lazy">
           </figure>
 
           <div class="project-text">
@@ -305,11 +292,7 @@
           </div>
 
           <figure class="project-media">
-            <div class="placeholder-image">
-              Annotated screenshot of new rescue modal highlighting each key
-              element
-            </div>
-            <figcaption class="media-caption">Annotated screenshot of new rescue modal highlighting each key element</figcaption>
+            <img src="../assets/curbside-sos_modal-annotated.jpg" alt="Annotated screenshot of new rescue modal highlighting each key element" loading="lazy">
           </figure>
 
           <div class="project-text">
@@ -328,19 +311,11 @@
           </div>
 
           <figure class="project-media">
-            <div class="placeholder-image">
-              Side-by-side of old modal (from Problem section) vs. new modal
-              showing the visual improvements
-            </div>
-            <figcaption class="media-caption">Side-by-side of old modal (from Problem section) vs. new modal showing the visual improvements</figcaption>
+            <img src="../assets/curbside-sos_modal-comparison.jpg" alt="Side-by-side of old modal versus new modal showing the visual improvements" loading="lazy">
           </figure>
 
           <figure class="project-media">
-            <div class="placeholder-image">
-              Screenshot of "ongoing rescues" screen showing the broader app
-              context
-            </div>
-            <figcaption class="media-caption">Screenshot of "ongoing rescues" screen showing the broader app context</figcaption>
+            <img src="../assets/curbside-sos_ongoing-rescues.jpg" alt="Screenshot of ongoing rescues screen showing the broader app context" loading="lazy">
           </figure>
 
           <div class="project-text">
@@ -455,6 +430,89 @@
         );
 
         highlights.forEach((highlight) => observer.observe(highlight));
+
+        // Media controls - add to all images and videos in project-media
+        const allMedia = document.querySelectorAll(".project-content .project-media");
+
+        allMedia.forEach((mediaContainer, index) => {
+          const mediaElement = mediaContainer.querySelector("img, video");
+
+          if (!mediaElement) return;
+
+          const isVideo = mediaElement.tagName === "VIDEO";
+          const mediaId = `project-media-${index}`;
+          mediaElement.id = mediaId;
+
+          // Add container class for styling
+          mediaContainer.classList.add("media-container");
+
+          // Create expand button
+          const expandButton = document.createElement("button");
+          expandButton.className = "video-control video-expand";
+          expandButton.setAttribute("aria-label", "Expand media");
+          expandButton.setAttribute("aria-expanded", "false");
+          expandButton.setAttribute("aria-controls", mediaId);
+          expandButton.innerHTML = `<svg width="12" height="12" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M1 5.5V1.5C1 1.22386 1.22386 1 1.5 1H5.5M10.5 1H14.5C14.7761 1 15 1.22386 15 1.5V5.5M15 10.5V14.5C15 14.7761 14.7761 15 14.5 15H10.5M5.5 15H1.5C1.22386 15 1 14.7761 1 14.5V10.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>`;
+
+          mediaContainer.insertBefore(expandButton, mediaElement);
+
+          // Add speed control for videos only
+          if (isVideo) {
+            const speedButton = document.createElement("button");
+            speedButton.className = "video-control video-speed";
+            speedButton.setAttribute("aria-label", "Change playback speed");
+            speedButton.textContent = "1x";
+
+            mediaContainer.insertBefore(speedButton, mediaElement);
+
+            // Speed control toggle (1x <-> 0.5x)
+            speedButton.addEventListener("click", function () {
+              if (mediaElement.playbackRate === 1) {
+                mediaElement.playbackRate = 0.5;
+                speedButton.textContent = "0.5x";
+              } else {
+                mediaElement.playbackRate = 1;
+                speedButton.textContent = "1x";
+              }
+            });
+          }
+
+          // Expand/collapse function
+          function toggleExpand() {
+            const isExpanded = mediaContainer.classList.contains("expanded");
+
+            if (isExpanded) {
+              // Collapse
+              mediaContainer.classList.remove("expanded");
+              expandButton.innerHTML = `<svg width="12" height="12" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M1 5.5V1.5C1 1.22386 1.22386 1 1.5 1H5.5M10.5 1H14.5C14.7761 1 15 1.22386 15 1.5V5.5M15 10.5V14.5C15 14.7761 14.7761 15 14.5 15H10.5M5.5 15H1.5C1.22386 15 1 14.7761 1 14.5V10.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>`;
+              expandButton.setAttribute("aria-label", "Expand media");
+              expandButton.setAttribute("aria-expanded", "false");
+            } else {
+              // Expand
+              mediaContainer.classList.add("expanded");
+              expandButton.innerHTML = `<svg width="12" height="12" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M5.5 1V5.5H1M10.5 1V5.5H15M15 10.5H10.5V15M1 10.5H5.5V15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>`;
+              expandButton.setAttribute("aria-label", "Collapse media");
+              expandButton.setAttribute("aria-expanded", "true");
+            }
+          }
+
+          // Click handler
+          expandButton.addEventListener("click", toggleExpand);
+
+          // Keyboard handler (Enter and Space)
+          expandButton.addEventListener("keydown", function (e) {
+            if (e.key === "Enter" || e.key === " ") {
+              e.preventDefault();
+              toggleExpand();
+            }
+          });
+        });
       });
     </script>
   </body>

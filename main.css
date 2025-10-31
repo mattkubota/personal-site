@@ -30,6 +30,7 @@ body {
   /* Typography Scale */
   --font-size-sm: 0.875rem; /* 14px */
   --font-size-base: 1rem; /* 16px */
+  --font-size-lg: 1.125rem; /* 18px */
 
   /* Line Heights */
   --line-height-tight: 1.25;
@@ -459,6 +460,113 @@ section {
 /* Project detail page media */
 .project-content .project-media {
   margin: var(--space-3xl) 0;
+  /* Allow video to overflow when scaled */
+  overflow: visible;
+}
+
+.project-content .project-media video {
+  width: 100%;
+  height: auto;
+  background-color: #f6f6f6;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+}
+
+/* Media container with controls (for both images and videos) */
+.media-container {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  /* Allow media to overflow horizontally when scaled */
+  overflow: visible;
+  transition: padding-bottom var(--transition-fast) cubic-bezier(0.2, 0.55, 0.7, 1);
+}
+
+.media-container.expanded {
+  /* Add space below for the extra 50% height from scaling */
+  /* Using aspect ratio 3:2, height = width × 2/3 */
+  /* Extra space needed = width × 2/3 × 0.5 (half the original height) */
+  padding-bottom: calc(100% * 2 / 3 * 0.5);
+}
+
+.media-container video,
+.media-container img {
+  display: block;
+  /* Maintain consistent aspect ratio */
+  aspect-ratio: 3 / 2;
+  width: 100%;
+  height: auto;
+  /* GPU-accelerated properties only */
+  transition: transform var(--transition-fast) cubic-bezier(0.2, 0.55, 0.7, 1);
+  transform-origin: top center;
+  /* Trigger GPU layer */
+  transform: translate3d(0, 0, 0);
+}
+
+.media-container.expanded video,
+.media-container.expanded img {
+  /* Visual scaling via GPU transform */
+  transform: translate3d(0, 0, 0) scale(1.5);
+}
+
+/* Video controls */
+.video-control {
+  position: absolute;
+  top: var(--space-sm);
+  background: transparent;
+  color: var(--color-text-muted);
+  border: none;
+  border-radius: var(--radius-xs);
+  padding: 4px 6px;
+  font-size: 12px;
+  font-weight: var(--font-weight-normal);
+  font-family: var(--font-sans);
+  cursor: pointer;
+  z-index: 10;
+  transition: background var(--transition-fast) ease,
+    left var(--transition-fast) ease, right var(--transition-fast) ease,
+    top var(--transition-fast) ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.video-control:hover {
+  background: rgba(0, 0, 0, 0.1);
+}
+
+.video-control:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+  background: rgba(0, 0, 0, 0.1);
+}
+
+.video-expand {
+  left: var(--space-sm);
+  width: 24px;
+  height: 24px;
+  padding: 4px;
+}
+
+.media-container.expanded .video-expand {
+  left: calc(50% - 50% * 1.5 + var(--space-sm));
+  top: var(--space-sm);
+}
+
+.video-expand svg {
+  width: 12px;
+  height: 12px;
+}
+
+.video-speed {
+  right: var(--space-sm);
+  min-width: 36px;
+  height: 24px;
+}
+
+.media-container.expanded .video-speed {
+  right: calc(50% - 50% * 1.5 + var(--space-sm));
+  top: var(--space-sm);
 }
 
 .media-caption {
@@ -535,6 +643,11 @@ section {
   color: var(--color-text-muted);
 }
 
+.project-summary {
+  font-size: var(--font-size-lg);
+  color: var(--color-text);
+}
+
 .project-role {
   color: var(--color-text-muted);
 }
@@ -568,6 +681,10 @@ section {
   font-style: italic;
 }
 
+.project-text p.quote {
+  text-indent: -0.45em;
+}
+
 .highlight {
   font-weight: var(--font-weight-normal);
   background: linear-gradient(
@@ -577,8 +694,8 @@ section {
   ); /* 30% opacity of color-success */
   background-size: 0% 100%;
   background-repeat: no-repeat;
-  padding: 0.2em 0.2em;
-  margin: -0.2em -0.2em;
+  padding: 0.2em 0;
+  margin: -0.2em 0;
   transition: background-size var(--transition-base)
     cubic-bezier(0.2, 0.55, 0.7, 1) 0.3s;
 }
@@ -607,14 +724,14 @@ section {
 }
 
 .placeholder-image {
-  background-color: var(--color-border);
-  border: 2px dashed var(--color-text-muted);
+  background-color: #f6f6f6;
+  border: 1px solid var(--color-border);
   border-radius: var(--radius-sm);
   padding: var(--space-4xl);
   text-align: center;
   color: var(--color-text-muted);
   font-size: var(--font-size-sm);
-  aspect-ratio: 16 / 10;
+  aspect-ratio: 3 / 2;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -644,6 +761,11 @@ section {
 
   .experience .row-meta {
     text-align: left;
+  }
+
+  /* Hide expand button on smaller viewports */
+  .video-expand {
+    display: none;
   }
 }
 
