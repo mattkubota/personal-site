@@ -54,7 +54,14 @@
 
         <div class="project-content">
           <figure class="project-media">
-            <video src="../assets/curbside-sos_prototype.webm" autoplay loop muted playsinline></video>
+            <video
+              src="../assets/curbside-sos_prototype.webm"
+              autoplay
+              loop
+              muted
+              playsinline
+            ></video>
+            <figcaption>Redesigned offer modal</figcaption>
           </figure>
 
           <div class="project-text">
@@ -89,7 +96,12 @@
           </div>
 
           <figure class="project-media">
-            <img src="../assets/curbside-sos_old-app.jpg" alt="Screenshot of old app showing poor user experience" loading="lazy">
+            <img
+              src="../assets/curbside-sos_old-app.webp"
+              alt="Screenshot of old app showing poor user experience"
+              loading="lazy"
+            />
+            <figcaption>Key screens from the legacy app</figcaption>
           </figure>
 
           <div class="project-text">
@@ -175,7 +187,14 @@
           </div>
 
           <figure class="project-media">
-            <img src="../assets/curbside-sos_job-states.jpg" alt="All states of job workflow" loading="lazy">
+            <img
+              src="../assets/curbside-sos_job-states.jpg"
+              alt="All states of job workflow"
+              loading="lazy"
+            />
+            <figcaption>
+              Job workflow states from offer to completion
+            </figcaption>
           </figure>
 
           <div class="project-text">
@@ -206,7 +225,15 @@
           </div>
 
           <figure class="project-media">
-            <img src="../assets/curbside-sos_pricing-comparison.jpg" alt="Side-by-side comparison of the two pricing approaches explored" loading="lazy">
+            <img
+              src="../assets/curbside-sos_pricing-comparison.jpg"
+              alt="Side-by-side comparison of the two pricing approaches explored"
+              loading="lazy"
+            />
+            <figcaption>
+              Exploring two approaches to displaying dynamic pricing with
+              bonuses
+            </figcaption>
           </figure>
 
           <div class="project-text">
@@ -224,7 +251,14 @@
           </div>
 
           <figure class="project-media">
-            <img src="../assets/curbside-sos_notifications.jpg" alt="Before and after comparison of notification design" loading="lazy">
+            <img
+              src="../assets/curbside-sos_notifications.jpg"
+              alt="Before and after comparison of notification design"
+              loading="lazy"
+            />
+            <figcaption>
+              Old vague notifications vs. new informative push notifications
+            </figcaption>
           </figure>
 
           <div class="project-text">
@@ -263,7 +297,14 @@
           </div>
 
           <figure class="project-media">
-            <img src="../assets/curbside-sos_flow.jpg" alt="Prototype showing notification to automatic bottom sheet appearance to single tap to accept" loading="lazy">
+            <img
+              src="../assets/curbside-sos_flow.jpg"
+              alt="Prototype showing notification to automatic bottom sheet appearance to single tap to accept"
+              loading="lazy"
+            />
+            <figcaption>
+              Simplified flow from notification to acceptance
+            </figcaption>
           </figure>
 
           <div class="project-text">
@@ -292,7 +333,14 @@
           </div>
 
           <figure class="project-media">
-            <img src="../assets/curbside-sos_modal-annotated.jpg" alt="Annotated screenshot of new rescue modal highlighting each key element" loading="lazy">
+            <img
+              src="../assets/curbside-sos_modal-annotated.jpg"
+              alt="Annotated screenshot of new rescue modal highlighting each key element"
+              loading="lazy"
+            />
+            <figcaption>
+              Breakdown of information hierarchy in the new offer modal
+            </figcaption>
           </figure>
 
           <div class="project-text">
@@ -311,11 +359,25 @@
           </div>
 
           <figure class="project-media">
-            <img src="../assets/curbside-sos_modal-comparison.jpg" alt="Side-by-side of old modal versus new modal showing the visual improvements" loading="lazy">
+            <img
+              src="../assets/curbside-sos_modal-comparison.jpg"
+              alt="Side-by-side of old modal versus new modal showing the visual improvements"
+              loading="lazy"
+            />
+            <figcaption>
+              Before and after comparison of the offer modal
+            </figcaption>
           </figure>
 
           <figure class="project-media">
-            <img src="../assets/curbside-sos_ongoing-rescues.jpg" alt="Screenshot of ongoing rescues screen showing the broader app context" loading="lazy">
+            <img
+              src="../assets/curbside-sos_ongoing-rescues.jpg"
+              alt="Screenshot of ongoing rescues screen showing the broader app context"
+              loading="lazy"
+            />
+            <figcaption>
+              Ongoing rescues screen in the broader app context
+            </figcaption>
           </figure>
 
           <div class="project-text">
@@ -432,7 +494,9 @@
         highlights.forEach((highlight) => observer.observe(highlight));
 
         // Media controls - add to all images and videos in project-media
-        const allMedia = document.querySelectorAll(".project-content .project-media");
+        const allMedia = document.querySelectorAll(
+          ".project-content .project-media"
+        );
 
         allMedia.forEach((mediaContainer, index) => {
           const mediaElement = mediaContainer.querySelector("img, video");
