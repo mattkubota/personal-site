@@ -693,6 +693,12 @@ section {
   margin-top: 0;
 }
 
+.project-text h3 {
+  margin-top: var(--space-xl);
+  margin-bottom: var(--space-lg);
+  font-size: var(--font-size-base);
+}
+
 .project-text ul {
   margin: var(--space-lg) 0;
   padding-left: var(--space-xl);
@@ -906,36 +912,35 @@ section {
   stroke-dasharray: 171.14;
   stroke-dashoffset: 171.14;
   animation-duration: 0.5s;
-  animation-delay: 1.5s;
+  animation-delay: 1s;
 }
 
 .signature-path:nth-child(4) {
   stroke-dasharray: 128.59;
   stroke-dashoffset: 128.59;
   animation-duration: 0.7s;
-  animation-delay: 2.2s;
-  animation-timing-function: ease-in;
+  animation-delay: 1.7s;
 }
 
 .signature-path:nth-child(3) {
   stroke-dasharray: 28.47;
   stroke-dashoffset: 28.47;
   animation-duration: 0.1s;
-  animation-delay: 3.3s;
+  animation-delay: 2.5s;
 }
 
 .signature-path:nth-child(2) {
   stroke-dasharray: 139.77;
   stroke-dashoffset: 139.77;
   animation-duration: 0.5s;
-  animation-delay: 3.6s;
+  animation-delay: 2.8s;
 }
 
 .signature-path:nth-child(1) {
   stroke-dasharray: 345.6;
   stroke-dashoffset: 345.6;
-  animation-duration: 1.8s;
-  animation-delay: 4.4s;
+  animation-duration: 1.5s;
+  animation-delay: 3.5s;
 }
 
 @keyframes draw-signature {
