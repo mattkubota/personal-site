@@ -77,15 +77,16 @@
               platform and will contract with a number of companies to find the
               best jobs—balancing pay against time and effort. Our network is
               made up of everyday people earning flexible income, driving their
-              own vehicles to handle light-duty work like jump starts, fuel
-              delivery, battery replacement. They use a mobile app to see
-              incoming rescue requests, navigate to motorists, document the
-              rescue, and track their earnings.
+              own vehicles to handle light-duty work, or "rescues" as we call
+              them, like jump starts, fuel delivery, or battery replacement.
+              They use a mobile app to see incoming rescue requests, navigate to
+              motorists, document the rescue, and track their earnings.
             </p>
             <p>
-              We inherited this technician app from an acquisition. It was
-              falling apart. The App Store reviews illuminate the state it was
-              in:
+              We inherited the existing technician app from an acquisition. It
+              was outdated, buggy, and poorly designed (in fact not designed at
+              all we found out). The App Store reviews illuminate the state it
+              was in:
             </p>
             <ul>
               <li class="quote">
@@ -109,54 +110,56 @@
           <div class="project-text">
             <p>
               Beyond the crashes and bugs, the app eroded trust with every
-              interaction. Technicians couldn't rely on notifications, couldn't
-              quickly evaluate whether a job was worth their time, and
-              questioned whether they'd even get paid correctly. Our network was
-              frustrated and had little loyalty to our platform.
+              interaction. Technicians couldn't rely on notifications to let
+              them know about new offers, couldn't quickly evaluate whether the
+              offer was worth their time, and questioned whether they'd even get
+              paid correctly. Our network was frustrated and had little loyalty
+              to our platform.
             </p>
             <p>
               The most pressing business issue:
               <strong class="highlight-negative"
                 >only 54% of rescue offers were automatically accepted</strong
-              >. Nearly half of all jobs required manual dispatcher
-              intervention—an expensive process where dispatchers had to sweeten
-              deals with bonuses just to get technicians to accept. This meant:
-              higher costs eating into margins, longer wait times for stranded
-              motorists, frustrated technicians, and overworked dispatchers.
+              >. The other, nearly half, of all offers required manual
+              dispatcher intervention—an expensive process where dispatchers had
+              to sweeten deals with bonuses just to get technicians to accept.
+              This meant: higher costs eating into margins, longer wait times
+              for stranded motorists, frustrated technicians, and overworked
+              dispatchers.
             </p>
             <p>
               Technicians were paid a flat base rate per job, which incentivized
               cherry-picking easy, nearby rescues and rejecting anything farther
-              or more complex. The app gave them almost no information upfront
-              to make informed decisions, just a generic modal saying "A new
-              work order is available in your area!" with a button to view
-              details buried behind additional taps.
+              or more complex. However, even getting basic information about
+              distance, rescue type, and vehicle type required multiple taps.
+              The app provided almost no information upfront to help technicians
+              make informed decisions—just a generic modal that read, "A new
+              work order is available in your area!" with important details
+              buried within subviews.
             </p>
             <p>
-              If we implemented dynamic pricing that accounts for distance and
-              complexity, and surfaced that pricing alongside critical job
-              details upfront, technicians could quickly evaluate offers and
-              accept more jobs, especially ones they previously would have
-              rejected.
+              Our hypothesis was two-fold: (1) if instead of a flat rate, we
+              implemented dynamic earnings for technicians that accounts for
+              distance and complexity, and (2) elegantly surfaced those new
+              earnings alongside critical job details upfront, then technicians
+              could more easily evaluate offers and accept more
+              rescues—especially ones they previously would have rejected.
             </p>
             <p>
-              But the pricing logic alone wouldn't be enough. We needed an app
+              The pricing logic alone wouldn't be enough. We needed an app
               experience that technicians could actually trust and use
               efficiently. A rebuild was inevitable, and we saw an opportunity
               to redesign key workflows from the ground up.
             </p>
-
             <h2>Research & Exploration</h2>
             <p>
               I conducted interviews with technicians in our network to
-              understand their thought process when evaluating rescue offers. I
-              showed them prototypes of the rescue offer modal at different
-              states and asked what mattered most when deciding whether to
-              accept or reject it.
-            </p>
-            <p>
-              I learned technicians needed different information at different
-              stages of a rescue:
+              understand their thought process when evaluating rescue offers. It
+              was a perfect opportunity to revisit the IA and question previous
+              assumptions about what information was critical throughout the
+              user journey. Showing them mocks of both the offer modal and cards
+              representing each stage of an accepted rescue, we discussed what
+              information mattered most at each state. Some findings:
             </p>
             <p>
               <strong>Before accepting:</strong> Most importantly, they want to
@@ -205,21 +208,26 @@
           <div class="project-text">
             <p>
               Another important question was: how might we surface rescue offers
-              with bonus incentives clearly?
+              with bonus incentives clearly within the app experience?
             </p>
             <p>
               Before, any bonus incentives (like holiday pay or off-peak
               multipliers) were communicated via text or email separately.
               Technicians had to mentally calculate their total earnings by
-              remembering their base rate and adding any active bonuses. This
-              disjointed experience increased cognitive load or would be
-              forgotten altogether.
+              adding active bonuses to their base rate. For example, a
+              technician with a $12 base rate would have to remember that the
+              jobs they completed from 10pm–2am on the Fourth of July had a $4
+              per job bonus when they were verifying their paycheck the
+              following week since nothing in the app indicated this bonus. This
+              disjointed experience increased cognitive load, and frankly, many
+              technicians lacked awareness about the incentives since the comms
+              came through a different channel.
             </p>
             <p>
-              I explored two approaches: either show the dynamic price large
+              I explored two approaches: either show only the dynamic earnings
               with the incentive bonus displayed separately nearby, or show the
-              total price prominently with a callout explaining the bonus was
-              added.
+              combined earnings prominently with a callout indicating the bonus
+              is included in the total.
             </p>
             <p>
               We chose the latter so technicians wouldn't have to do mental math
@@ -242,15 +250,15 @@
 
           <div class="project-text">
             <p>
-              The legacy app used local notifications that only worked when the
-              app was open, and the messaging was vague—"A new work order is
-              available in your area!" I redesigned these as push notifications
-              that would reliably reach technicians even when the app was
-              backgrounded, and included the most critical details upfront:
-              distance, rescue type, and offer value. I also worked with a
-              musician to compose new notification sounds for different types of
-              offers, helping to distinguish them from other apps while the
-              technician may be on the road.
+              The legacy app used local, versus push, notifications that only
+              worked when the app was open, and the messaging was vague—"A new
+              work order is available in your area!" I redesigned these as push
+              notifications that would reliably reach technicians even when the
+              app was backgrounded, and included the most critical details
+              upfront: distance, rescue type, and offer value. I also worked
+              with a musician to compose new notification sounds for different
+              types of offers, helping to distinguish them from other apps while
+              the technician may be on the road.
             </p>
           </div>
 
@@ -271,16 +279,9 @@
             <h2>Solution</h2>
             <p>
               While we planned a comprehensive app redesign with a new design
-              system and improved workflows throughout, we prioritized the offer
-              modal as the highest-impact intervention to address the 54%
-              auto-match problem.
-            </p>
-            <p>
-              The main addition was a new bottom sheet modal that automatically
-              appeared when a rescue offer came in. This replaced the legacy
-              flow where technicians had to: (1) tap to close a generic "new
-              work order available" modal, (2) tap again to open a detail view,
-              and (3) finally tap to accept or reject.
+              system and improved workflows throughout, we prioritized the new
+              offer modal as the highest-impact intervention to address the low
+              auto-acceptance rate.
             </p>
           </div>
 
@@ -297,22 +298,10 @@
 
           <div class="project-text">
             <p>
-              Now, a single tap to accept from the modal that already contained
-              everything they needed to decide.
-            </p>
-            <p>
-              Technicians needed to make split-second decisions, often while
-              driving or juggling multiple apps. Every design choice prioritized
-              surfacing the right information at the right time with minimal
-              interaction. The goal wasn't just to simplify the app, but to lift
-              up what mattered most and make the experience feel familiar to
-              anyone who'd used other gig-work apps.
-            </p>
-            <p>
-              We hoped a secondary benefit would emerge if we nailed the
-              redesign: trust. An app that actually worked reliably and
-              respected technicians' time could rebuild the relationship our
-              legacy product had eroded.
+              The new offer modal would replace the legacy flow where
+              technicians had to: (1) tap to close a generic "new work order
+              available" modal, (2) tap to open a detail view to see the rest of
+              the offer details, and (3) finally tap to accept or reject.
             </p>
           </div>
 
@@ -324,72 +313,60 @@
               muted
               playsinline
             ></video>
-            <figcaption>
-              Redesigned key flow from offer to acceptance
-            </figcaption>
+            <figcaption>Redesigned flow from offer to acceptance</figcaption>
           </figure>
 
           <div class="project-text">
-            <h3>What we surfaced</h3>
+            <p>The new experience:</p>
             <ul>
               <li>
-                <strong>Total earnings prominently displayed</strong> with a
-                clear callout if bonus incentives were included (e.g., "+$8
-                holiday bonus"), eliminating mental math and building
-                transparency
+                Technicians receive a push notification with a few key details
+                about the rescue that allows them to immediately filter if
+                they're not interested, or if they are, deep link directly into
+                the offer modal.
               </li>
               <li>
-                <strong>Vehicle type and rescue type</strong> so technicians
-                could immediately identify difficult job combinations
+                The rescue offer modal presents as a bottom sheet containing all
+                the critical information needed to accept or decline: total
+                earnings, rescue type, vehicle type, a map with distance and
+                drive time, and expected arrival time.
               </li>
               <li>
-                <strong>Distance from their current location</strong> in both
-                mileage and drive time accounting for traffic to help them
-                evaluate time investment
-              </li>
-              <li>
-                <strong>Direct GPS coordinates</strong> instead of
-                reverse-geocoded addresses for accurate navigation
+                After acceptance, technicians can complete the rescue
+                step-by-step through a series of cards tailor-made for each
+                stage of the process.
               </li>
             </ul>
-
-            <h3>Visual improvements for glanceability</h3>
-            <ul>
-              <li>Better text hierarchy with a more intentional type scale</li>
-              <li>
-                Higher contrast color palette meeting AA accessibility standards
-              </li>
-              <li>
-                Push notifications that worked even when the app was closed,
-                with descriptive copy showing distance, rescue type, and value
-                upfront
-              </li>
-            </ul>
-
+            <p>
+              Technicians need to make split-second decisions, often while
+              driving or juggling multiple apps. Every design choice prioritized
+              surfacing the right information at the right time with minimal
+              interaction. The goal wasn't just to simplify the app, but to lift
+              up what mattered most and make the experience feel familiar to
+              anyone who'd used other gig-work apps.
+            </p>
+            <p>
+              Stylistically, it was important to emphasize type hierarchy and
+              improve the intentionality around color usage because of the
+              environments the app is viewed in. Additionally, our other digital
+              products used Material UI theming, and although this app didn’t
+              since it was built in React Native, we wanted the design language
+              to feel analogous.
+            </p>
             <h2>Results</h2>
             <p>
-              In our largest market,
+              After launching the new experience in the Dallas-Fort Worth area,
+              our largest market,
               <strong class="highlight"
-                >the automated dispatch rate jumped from 54% to 93%</strong
-              >
-              after launching the redesigned offer modal. Nearly every rescue
-              offer was now being accepted without manual dispatcher
-              intervention.
+                >the automated acceptance rate jumped from 54% to 93%</strong
+              >. Nearly every rescue offer is now being accepted without the
+              need for manual dispatcher intervention.
             </p>
             <p>
-              This was more than better UX—it was a combination of an improved
-              backend matching algorithm and surfacing the right information at
-              the right moment. Neither could have succeeded without the other.
+              This massive improvement is the direct result of both the improved
+              backend matching algorithm and the new frontend experience that
+              surfaces the right information at the right moment.
             </p>
-            <p>
-              Due to resource constraints and a desire to get the highest-impact
-              changes to technicians faster, we launched the new offer modal
-              over the existing legacy app as Phase 1. The broader React Native
-              rebuild and design system work was planned for Phase 2. That 93%
-              acceptance rate came from this focused intervention, proving that
-              the offer modal was the critical unlock.
-            </p>
-
             <h2>Technician feedback</h2>
             <p class="quote">
               "The new system is 1000 times better than the previous system. Now
@@ -400,7 +377,6 @@
               and to not accept jobs. Now I'm not frustrated when I see the jobs
               pop up and I'm eager to accept them."
             </p>
-
             <p class="quote">
               "I like being able to see exactly what I'm getting paid for the
               job and what the job entails and being
@@ -410,7 +386,6 @@
                 see all that information.</strong
               >"
             </p>
-
             <p class="quote">
               "I can tell you with 100% certainty that about
               <strong class="highlight"
@@ -419,14 +394,12 @@
                 process.</strong
               >"
             </p>
-
             <p class="quote">
               "I'm actually so happy with the new app that I really find it
               difficult to complain about any of the very small issues that seem
               to be present. Because the pay seems fair and the communication is
               clear. I'm much more willing to take every job that I can."
             </p>
-
             <p class="quote">
               "I was just telling my wife this morning that
               <strong class="highlight"
