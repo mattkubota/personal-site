@@ -324,14 +324,6 @@
             if (response.ok) {
               const data = await response.json();
               await onSuccess(data);
-
-              // Fade in the widget if selector provided
-              if (elementSelector) {
-                const element = document.querySelector(elementSelector);
-                if (element) {
-                  element.classList.add("loaded");
-                }
-              }
             }
           } catch (error) {
             // Widget data unavailable, fail silently
@@ -350,17 +342,31 @@
 
         // Weather widget
         async function loadWeather() {
+          const weatherIcon = document.querySelector(".weather-icon");
+          if (!weatherIcon) return;
+
+          // Clear any fallback content when JS is enabled
+          weatherIcon.textContent = "";
+          weatherIcon.removeAttribute("title");
+
+          let iconSet = false;
+
           await loadWidget(
             "/api/weather",
             (weather) => {
-              const weatherIcon = document.querySelector(".weather-icon");
               if (weatherIcon && weather.icon) {
                 weatherIcon.textContent = weather.icon;
                 weatherIcon.title = `${weather.description} in ${weather.city}`;
+                iconSet = true;
               }
             },
-            ".weather-icon"
+            null
           );
+
+          // If the API failed or returned no usable data, remove the icon entirely
+          if (!iconSet && weatherIcon) {
+            weatherIcon.remove();
+          }
         }
 
         // Local time widget
